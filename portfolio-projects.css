@@ -1,0 +1,136 @@
+.project-archive {
+  margin-top: 56px;
+  padding-top: 42px;
+  border-top: 1px solid var(--line);
+}
+
+.project-archive-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
+  gap: 28px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.project-archive-heading h3 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+}
+
+.project-archive-heading p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.project-archive-list {
+  border-top: 1px solid var(--line);
+}
+
+.project-archive-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.55fr) minmax(180px, 0.7fr) minmax(0, 1.45fr) auto;
+  gap: 22px;
+  align-items: center;
+  padding: 20px 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-archive-row:hover {
+  background: linear-gradient(90deg, rgba(99, 184, 255, 0.035), transparent 70%);
+}
+
+.project-archive-name {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 740;
+  letter-spacing: -0.015em;
+}
+
+.project-archive-domain {
+  color: var(--accent-soft);
+  font-size: 0.76rem;
+  font-weight: 760;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.project-archive-description {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.58;
+}
+
+.project-archive-links {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.project-archive-links a {
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.project-archive-links a:hover,
+.project-archive-links a:focus-visible {
+  color: var(--accent);
+}
+
+.project-archive-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+.project-archive-footer a {
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 720;
+}
+
+@media (max-width: 980px) {
+  .project-archive-heading {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .project-archive-row {
+    grid-template-columns: minmax(160px, 0.7fr) minmax(160px, 0.8fr) minmax(0, 1.4fr);
+  }
+
+  .project-archive-links {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 680px) {
+  .project-archive {
+    margin-top: 42px;
+    padding-top: 32px;
+  }
+
+  .project-archive-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 18px 2px;
+  }
+
+  .project-archive-description {
+    margin-top: 4px;
+  }
+
+  .project-archive-links {
+    grid-column: auto;
+    margin-top: 7px;
+  }
+
+  .project-archive-footer {
+    justify-content: flex-start;
+  }
+}
