@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering brief for LedgerLens, Michael Palmer's governed bookkeeping cleanup and accountant handoff workflow.">
+  <meta name="author" content="Michael Palmer">
+  <meta name="theme-color" content="#08101f">
+  <meta property="og:title" content="LedgerLens Engineering Brief | Michael Palmer">
+  <meta property="og:description" content="Workflow architecture, deterministic-first AI routing, trust boundaries, auditability, and production limitations behind LedgerLens.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mpalmer79.github.io/engineering/ledgerlens.html">
+  <link rel="canonical" href="https://mpalmer79.github.io/engineering/ledgerlens.html">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../case-study.css">
+  <title>LedgerLens Engineering Brief | Michael Palmer</title>
+</head>
+<body class="case-study-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="nav-shell">
+      <a class="brand" href="../" aria-label="Michael Palmer portfolio home">
+        <span class="brand-mark">MP</span>
+        <span class="brand-name">Michael Palmer</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="LedgerLens engineering brief navigation">
+        <a class="back-link" href="../#projects">Back to portfolio</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#trust">Trust boundary</a>
+        <a href="#decisions">Decisions</a>
+        <a class="nav-cta" href="https://github.com/mpalmer79/LedgerLens" target="_blank" rel="noreferrer">Source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="case-hero section-shell">
+      <div class="case-hero-grid">
+        <div class="reveal">
+          <p class="case-kicker">Engineering brief · Governed AI workflow · Financial operations</p>
+          <h1>LedgerLens</h1>
+          <p class="case-deck">
+            A bookkeeping cleanup and accountant handoff assistant designed around a simple principle:
+            uncertain financial classifications should be routed to a defensible authority rather than
+            hidden behind an overconfident model prediction.
+          </p>
+          <div class="case-actions">
+            <a class="button button-primary" href="https://ledgerlens.up.railway.app/demo" target="_blank" rel="noreferrer">Guided demo</a>
+            <a class="button button-secondary" href="https://github.com/mpalmer79/LedgerLens" target="_blank" rel="noreferrer">View source</a>
+            <a class="button button-secondary" href="../#projects">Portfolio</a>
+          </div>
+        </div>
+
+        <aside class="case-status-panel reveal" aria-label="LedgerLens engineering status">
+          <h2>Current engineering status</h2>
+          <div class="case-status-list">
+            <div class="case-status-row"><span class="case-status-label">Workflow</span><span class="case-status-value good">End-to-end cleanup and handoff shipped</span></div>
+            <div class="case-status-row"><span class="case-status-label">Public mode</span><span class="case-status-value good">Zero-cost demo path, synthetic data only</span></div>
+            <div class="case-status-row"><span class="case-status-label">Trust</span><span class="case-status-value good">Finalized demo rows procedurally verified</span></div>
+            <div class="case-status-row"><span class="case-status-label">Model accuracy</span><span class="case-status-value pending">Not used as the product trust boundary</span></div>
+            <div class="case-status-row"><span class="case-status-label">Production SaaS</span><span class="case-status-value pending">Explicitly not claimed</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <nav class="case-nav" aria-label="On this page">
+      <div class="case-nav-inner">
+        <a href="#problem">Problem</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#trust">Trust boundary</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#boundaries">Boundaries</a>
+        <a href="#evidence">Evidence</a>
+      </div>
+    </nav>
+
+    <section class="case-section" id="problem">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Problem framing</p>
+          <h2>The dangerous cases are the ambiguous ones.</h2>
+          <p>
+            Most monthly transaction cleanup is repetitive. The risk is in the minority of rows where the
+            bank description does not contain enough business context to make a safe accounting decision.
+          </p>
+        </div>
+
+        <div class="case-problem">
+          <article class="case-copy-card reveal">
+            <p>
+              A system that guesses confidently on ambiguous bookkeeping data can quietly propagate bad
+              categories into financial statements, tax work, and month-end reporting. LedgerLens therefore
+              separates fast deterministic handling from uncertain inference and from final human authority.
+            </p>
+            <p>
+              The product output is not a general ledger. It is a reviewed categorization package plus owner
+              context that can be handed to a bookkeeper or accountant for substantive review.
+            </p>
+          </article>
+          <aside class="case-callout reveal">
+            <strong>Design objective</strong>
+            <p>Automate what is defensible. Surface what is ambiguous. Preserve who or what authorized every finalized row.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="architecture">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">System architecture</p>
+          <h2>Deterministic layers first. Probabilistic reasoning later.</h2>
+          <p>
+            The current workflow places correction memory and deterministic rules ahead of fallback/model
+            routing. Human review and audit are part of the architecture, not cleanup steps added afterward.
+          </p>
+        </div>
+
+        <div class="architecture-stack reveal" aria-label="LedgerLens workflow architecture">
+          <div class="architecture-row">
+            <div class="arch-node"><strong>Import + normalize</strong><span>CSV workflow, vendor normalization, business context</span></div>
+            <div class="arch-node governance"><strong>Correction memory</strong><span>Exact and fingerprint reuse from prior human corrections</span></div>
+            <div class="arch-node governance"><strong>Deterministic rules</strong><span>Known vendor/category logic before model routing</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node primary"><strong>Fallback / model</strong><span>Used only when earlier layers cannot decide safely</span></div>
+            <div class="arch-node primary"><strong>Confidence routing</strong><span>Auto, review, uncertain, or accountant-follow-up states</span></div>
+            <div class="arch-node governance"><strong>Human review</strong><span>Approve, correct, or explicitly defer</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node governance"><strong>Audit trail</strong><span>Actor, business, request, action, safe metadata</span></div>
+            <div class="arch-node governance"><strong>Handoff package</strong><span>Reviewed CSV + Markdown + unresolved items</span></div>
+            <div class="arch-node"><strong>Learning loop</strong><span>Human corrections become future memory signal</span></div>
+          </div>
+        </div>
+        <p class="architecture-note reveal">
+          The public deployment intentionally supports a zero-cost demo mode and synthetic scenario rather than
+          pretending to be production financial software.
+        </p>
+      </div>
+    </section>
+
+    <section class="case-section" id="trust">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Trust boundary</p>
+          <h2>Do not confuse model accuracy with workflow trust.</h2>
+          <p>
+            LedgerLens deliberately reports raw model behavior separately from the condition required before a
+            row is considered safe enough to appear as finalized in the guided-demo ledger.
+          </p>
+        </div>
+
+        <div class="case-metrics reveal">
+          <article class="case-metric"><strong>100%</strong><span>Finalized guided-demo rows procedurally verified before handoff</span></article>
+          <article class="case-metric caution"><strong>≈63%</strong><span>Reported raw model-only accuracy on the synthetic eval dataset</span></article>
+          <article class="case-metric caution"><strong>≈42%</strong><span>Reported raw model-only accuracy on the adversarial slice</span></article>
+          <article class="case-metric"><strong>3</strong><span>Defensible verification authorities: human review, correction memory, qualifying deterministic rule</span></article>
+        </div>
+
+        <div class="case-gate reveal">
+          <strong>What 100% means</strong>
+          <p>
+            It is a procedural guarantee about the workflow state, not a guarantee that every accounting or tax
+            decision is substantively correct. Rows that still require review remain unresolved instead of being
+            relabeled as verified.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="decisions">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering decisions</p>
+          <h2>Decisions that shape the safety model.</h2>
+        </div>
+
+        <div class="case-decisions">
+          <article class="case-decision reveal"><span class="case-decision-index">01</span><h3>Rules and memory before AI</h3><p>Cheap, traceable decisions run first. Model inference is reserved for cases the deterministic layers cannot settle safely.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">02</span><h3>Verification authority over confidence</h3><p>A high model probability is not enough to finalize a row. Finalization requires a defensible decision authority.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">03</span><h3>Ambiguous vendors do not inherit blindly</h3><p>Vendors such as Amazon, Costco, and Home Depot are intentionally blocked from unsafe fingerprint-memory generalization.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">04</span><h3>Audit the workflow, not just the output</h3><p>Business, actor, request, action, and safe before/after metadata make the route to a decision inspectable.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">05</span><h3>Keep accounting boundaries explicit</h3><p>The system produces categorization and handoff artifacts. It does not claim double-entry bookkeeping, reconciliation, tax filing, or CPA authority.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">06</span><h3>Public demo safety beats feature theater</h3><p>The public site is synthetic-data-only and intentionally avoids claiming production authentication, tenant isolation, or safe real-bank-data handling.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="boundaries">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Tradeoffs and limitations</p>
+          <h2>Scope is part of the engineering.</h2>
+        </div>
+
+        <div class="case-boundaries">
+          <article class="case-boundary-card reveal"><h3>Not accounting software</h3><p>No double-entry ledger, accrual engine, bank reconciliation, tax handling, split transactions, or multi-currency accounting.</p></article>
+          <article class="case-boundary-card reveal"><h3>Not production multi-tenant SaaS</h3><p>Business-scoped workflow foundations exist, but production authentication, tenant isolation, billing, retention automation, and disaster-recovery guarantees are not claimed.</p></article>
+          <article class="case-boundary-card reveal"><h3>No live accounting-system round trip</h3><p>The current product exports reviewed artifacts. QuickBooks, Xero, Plaid, and Finicity integrations remain future work.</p></article>
+          <article class="case-boundary-card reveal"><h3>Human authority still has limits</h3><p>The workflow can prove that a reviewer signed off. It cannot prove that the reviewer made the substantively correct accounting decision.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="evidence">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering evidence</p>
+          <h2>Inspect the system behind the claims.</h2>
+        </div>
+
+        <div class="case-evidence-grid">
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/LedgerLens/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noreferrer"><span>Architecture</span><strong>System architecture</strong><small>Drivers, pipeline, data model, evaluation, observability, and boundaries.</small></a>
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/LedgerLens/blob/main/docs/TRUST_METRIC.md" target="_blank" rel="noreferrer"><span>Trust</span><strong>Trust metric</strong><small>Exact definition of procedural verification and edge cases.</small></a>
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/LedgerLens/blob/main/docs/ACCOUNTING_DOMAIN_BOUNDARY.md" target="_blank" rel="noreferrer"><span>Boundary</span><strong>Accounting domain boundary</strong><small>What the product does and deliberately does not claim.</small></a>
+          <a class="case-evidence-card reveal" href="https://ledgerlens.up.railway.app/evals" target="_blank" rel="noreferrer"><span>Evaluation</span><strong>Eval evidence</strong><small>Raw model behavior is surfaced separately from workflow trust.</small></a>
+          <a class="case-evidence-card reveal" href="https://ledgerlens.up.railway.app/handoff" target="_blank" rel="noreferrer"><span>Output</span><strong>Accountant handoff</strong><small>The reviewed deliverable produced by the workflow.</small></a>
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/LedgerLens" target="_blank" rel="noreferrer"><span>Source</span><strong>GitHub repository</strong><small>Implementation, tests, documentation, eval artifacts, and roadmap.</small></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-footer-cta section-shell">
+      <div class="case-footer-panel reveal">
+        <div>
+          <p class="case-kicker">Portfolio</p>
+          <h2>AI should make uncertainty visible, not disappear.</h2>
+          <p>LedgerLens is an example of using deterministic controls, model evaluation, human authority, and auditability as one system.</p>
+        </div>
+        <div class="case-actions"><a class="button button-primary" href="../#projects">View more work</a></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../script.js"></script>
+</body>
+</html>
