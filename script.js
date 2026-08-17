@@ -11,122 +11,91 @@ const renderEducationV2 = () => {
   }
 
   educationSection.innerHTML = `
-    <div class="section-heading reveal">
+    <div class="section-heading reveal education-heading">
       <p class="eyebrow">Education</p>
       <h2>Building the foundation behind the systems I create.</h2>
       <p class="education-intro">
-        My Computer Science coursework at Southern New Hampshire University has progressed from
-        programming fundamentals into algorithms, databases, operating platforms, software design,
-        testing, mathematics, and applied technical problem solving.
+        My Computer Science coursework at Southern New Hampshire University has grown from
+        programming fundamentals into system design, algorithms, data, testing, mathematics,
+        and applied technical problem solving.
       </p>
     </div>
 
     <div class="education-v2">
-      <div class="education-overview-grid">
-        <article class="education-panel degree-path-card reveal">
-          <p class="mini-label">Southern New Hampshire University</p>
-          <h3>Computer Science degree path</h3>
-          <p>
-            I am building my academic foundation in stages while continuing to apply what I learn
-            through portfolio software, engineering projects, and technical coursework.
-          </p>
-
-          <div class="degree-path">
-            <div class="degree-step">
-              <div class="degree-step-topline">
-                <strong>Associate of Science in Computer Science</strong>
-                <span class="education-status">Current pathway</span>
-              </div>
-              <span>Anticipated conferral: January 2027</span>
-            </div>
-
-            <div class="degree-step">
-              <div class="degree-step-topline">
-                <strong>Bachelor of Science in Computer Science</strong>
-                <span class="education-status">Continuing</span>
-              </div>
-              <span>Continuing academic pathway after the associate degree</span>
-            </div>
+      <article class="education-panel degree-growth-card reveal">
+        <div class="degree-growth-header">
+          <div>
+            <p class="mini-label">Southern New Hampshire University</p>
+            <h3>Computer Science degree path</h3>
           </div>
-        </article>
-
-        <article class="education-panel academic-growth-card reveal">
-          <p class="mini-label">Academic growth</p>
-          <h3>From learning syntax to designing systems.</h3>
-          <p>
-            My coursework has steadily shifted from writing individual programs toward thinking
-            about complete systems and the tradeoffs behind them.
+          <p class="degree-growth-summary">
+            Coursework is increasingly focused on complete systems, engineering tradeoffs,
+            and evidence-based technical decisions.
           </p>
-          <blockquote>
-            I increasingly approach assignments as engineering problems: define the requirement,
-            choose the right data structures and architecture, protect data integrity, test the
-            behavior, document the decisions, and consider the person who ultimately has to use the system.
-          </blockquote>
-        </article>
-      </div>
+        </div>
+
+        <div class="degree-path">
+          <div class="degree-step">
+            <div class="degree-step-topline">
+              <strong>Associate of Science in Computer Science</strong>
+              <span class="education-status">Current pathway</span>
+            </div>
+            <span>Anticipated conferral: January 2027</span>
+          </div>
+
+          <div class="degree-step">
+            <div class="degree-step-topline">
+              <strong>Bachelor of Science in Computer Science</strong>
+              <span class="education-status">Continuing</span>
+            </div>
+            <span>Continuing academic pathway after the associate degree</span>
+          </div>
+        </div>
+
+        <div class="growth-note">
+          <span class="growth-note-label">Academic growth</span>
+          <p>
+            I now approach assignments as engineering problems: define the requirement, choose the
+            right architecture and data structures, protect data integrity, test behavior, document
+            decisions, and consider the person who ultimately uses the system.
+          </p>
+        </div>
+      </article>
 
       <div class="learning-section">
         <div class="education-subheading reveal">
           <p class="mini-label">What I have learned</p>
           <h3>Core areas of study</h3>
           <p>
-            These themes connect the individual courses into the technical foundation I am building
-            across software development and applied computer science.
+            Three connected areas summarize the technical foundation I am building across the degree.
           </p>
         </div>
 
-        <div class="learning-grid">
+        <div class="learning-grid learning-grid-compact">
           <article class="learning-card reveal">
             <span class="learning-number">01</span>
-            <h4>Software development</h4>
+            <h4>Software, systems and architecture</h4>
             <p>
-              Programming fundamentals, object-oriented development, application design,
-              software lifecycle practices, system analysis, and software quality.
+              Programming, object-oriented development, application design, software lifecycle practices,
+              operating platforms, system analysis, testing, and software quality.
             </p>
           </article>
 
           <article class="learning-card reveal">
             <span class="learning-number">02</span>
-            <h4>Algorithms and computational thinking</h4>
+            <h4>Algorithms, data and mathematics</h4>
             <p>
-              Data structures, algorithm analysis, discrete mathematics, structured problem solving,
-              and evaluating tradeoffs between different approaches.
+              Data structures, algorithm analysis, relational concepts, database organization,
+              discrete mathematics, calculus, statistics, and structured problem solving.
             </p>
           </article>
 
           <article class="learning-card reveal">
             <span class="learning-number">03</span>
-            <h4>Data and databases</h4>
+            <h4>AI, engineering and communication</h4>
             <p>
-              Structured database environments, relational concepts, data organization,
-              querying, and thinking about data as part of a larger application system.
-            </p>
-          </article>
-
-          <article class="learning-card reveal">
-            <span class="learning-number">04</span>
-            <h4>Systems and platforms</h4>
-            <p>
-              Operating platforms, system boundaries, platform-aware design, architecture,
-              and understanding how software interacts with the environment around it.
-            </p>
-          </article>
-
-          <article class="learning-card reveal">
-            <span class="learning-number">05</span>
-            <h4>Math, science and emerging technology</h4>
-            <p>
-              Calculus, applied statistics, discrete mathematics, AI literacy, physics,
-              scientific reasoning, and computer graphics within the broader degree plan.
-            </p>
-          </article>
-
-          <article class="learning-card reveal">
-            <span class="learning-number">06</span>
-            <h4>Research and technical communication</h4>
-            <p>
-              Research, written communication, evidence-based argument, and presenting complex
-              ideas clearly for technical and nontechnical audiences.
+              AI literacy, physics, scientific reasoning, computer graphics, research,
+              evidence-based writing, and communicating technical ideas clearly.
             </p>
           </article>
         </div>
@@ -137,8 +106,8 @@ const renderEducationV2 = () => {
           <p class="mini-label">Selected technical coursework</p>
           <h3>Degree-plan snapshot</h3>
           <p>
-            Selected courses from my July 2026 academic evaluation. Status labels reflect that
-            evaluation and will be updated as the degree progresses.
+            Selected courses from my July 2026 academic evaluation. Status labels reflect that audit
+            and will be updated as the degree progresses.
           </p>
         </div>
 
@@ -186,41 +155,26 @@ const renderEducationV2 = () => {
         </div>
       </div>
 
-      <div class="education-bottom-grid">
-        <article class="education-panel recognition-card reveal">
-          <p class="mini-label">Academic recognition</p>
-          <h3>Achievements and recognition</h3>
-          <p>
-            This area will grow as academic milestones are earned and formally recognized.
-          </p>
-
-          <div class="recognition-list">
-            <div class="recognition-item">
-              <strong>President's List</strong>
-              <span>Southern New Hampshire University</span>
-            </div>
-            <div class="recognition-item">
-              <strong>National Society of Leadership and Success</strong>
-              <span>Nomination</span>
-            </div>
+      <article class="education-panel recognition-card reveal">
+        <div class="recognition-header">
+          <div>
+            <p class="mini-label">Academic recognition</p>
+            <h3>Achievements and recognition</h3>
           </div>
+          <p>Additional honors will be added as they are earned and formally recognized.</p>
+        </div>
 
-          <p class="recognition-note">Additional honors and academic recognition will be added as earned.</p>
-        </article>
-
-        <article class="education-panel academic-growth-card reveal">
-          <p class="mini-label">Applied learning</p>
-          <h3>Coursework becomes proof of work.</h3>
-          <p>
-            I use academic projects to strengthen the same habits that shape my portfolio work:
-            requirements, architecture, implementation, testing, documentation, validation,
-            and continuous improvement.
-          </p>
-          <a class="text-link" href="https://github.com/mpalmer79" target="_blank" rel="noreferrer">
-            Review my GitHub <span aria-hidden="true">↗</span>
-          </a>
-        </article>
-      </div>
+        <div class="recognition-list">
+          <div class="recognition-item">
+            <strong>President's List</strong>
+            <span>Southern New Hampshire University</span>
+          </div>
+          <div class="recognition-item">
+            <strong>National Society of Leadership and Success</strong>
+            <span>Nomination</span>
+          </div>
+        </div>
+      </article>
     </div>
   `;
 };
