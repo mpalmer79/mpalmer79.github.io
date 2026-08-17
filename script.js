@@ -181,18 +181,16 @@ const renderEducationV2 = () => {
 
 renderEducationV2();
 
-const addEngineeringBriefLinks = () => {
-  const projectCards = Array.from(document.querySelectorAll('#projects .project-card'));
-  const arpiCard = projectCards.find((card) => card.querySelector('h3')?.textContent.trim() === 'ARPI');
+const prependProjectLink = (projectCards, title, href, label) => {
+  const card = projectCards.find((projectCard) => projectCard.querySelector('h3')?.textContent.trim() === title);
+  if (!card) return;
 
-  if (!arpiCard) return;
-
-  const actions = arpiCard.querySelector('.project-actions');
-  if (!actions || actions.querySelector('a[href="engineering/arpi.html"]')) return;
+  const actions = card.querySelector('.project-actions');
+  if (!actions || actions.querySelector(`a[href="${href}"]`)) return;
 
   const link = document.createElement('a');
-  link.href = 'engineering/arpi.html';
-  link.append('Engineering brief ');
+  link.href = href;
+  link.append(`${label} `);
 
   const arrow = document.createElement('span');
   arrow.setAttribute('aria-hidden', 'true');
@@ -202,7 +200,62 @@ const addEngineeringBriefLinks = () => {
   actions.prepend(link);
 };
 
-addEngineeringBriefLinks();
+const addNhChevyKioskCard = () => {
+  const projectGrid = document.querySelector('#projects .project-grid');
+  if (!projectGrid || projectGrid.querySelector('[data-project="nh-chevy-kiosk"]')) return;
+
+  const card = document.createElement('article');
+  card.className = 'project-card reveal';
+  card.dataset.project = 'nh-chevy-kiosk';
+  card.innerHTML = `
+    <div class="project-topline">
+      <span class="project-index">07</span>
+      <span class="project-status">Automotive AI</span>
+    </div>
+
+    <p class="project-domain">Automotive AI + Showroom Systems</p>
+    <h3>NH Chevy Showroom Kiosk</h3>
+    <p>
+      An in-store touchscreen platform for dealership customers to browse inventory, compare vehicles,
+      work with a tool-using AI sales assistant, estimate trades and payments, and hand off directly to
+      dealership staff through operational notification workflows.
+    </p>
+
+    <div class="tag-list" aria-label="NH Chevy Showroom Kiosk technologies">
+      <span>React</span>
+      <span>FastAPI</span>
+      <span>Tool-Using AI</span>
+      <span>PostgreSQL</span>
+      <span>CI/CD</span>
+    </div>
+
+    <div class="project-actions">
+      <a href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk/blob/main/ARCHITECTURE.md" target="_blank" rel="noreferrer">
+        Architecture <span aria-hidden="true">↗</span>
+      </a>
+      <a href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk" target="_blank" rel="noreferrer">
+        Source code <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  `;
+
+  projectGrid.appendChild(card);
+};
+
+const enhanceProjectPortfolio = () => {
+  const projectCards = Array.from(document.querySelectorAll('#projects .project-card'));
+
+  prependProjectLink(projectCards, 'ARPI', 'engineering/arpi.html', 'Engineering brief');
+  prependProjectLink(
+    projectCards,
+    'Vehicle Thermal Management Simulation',
+    'engineering/vtms.html',
+    'Engineering brief'
+  );
+  addNhChevyKioskCard();
+};
+
+enhanceProjectPortfolio();
 
 const header = document.querySelector('.site-header');
 const navToggle = document.querySelector('.nav-toggle');
