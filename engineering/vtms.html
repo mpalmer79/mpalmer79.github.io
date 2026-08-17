@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering brief for VTMS, Michael Palmer's physics-based vehicle thermal management simulation platform.">
+  <meta name="author" content="Michael Palmer">
+  <meta name="theme-color" content="#08101f">
+  <meta property="og:title" content="VTMS Engineering Brief | Michael Palmer">
+  <meta property="og:description" content="Physics model, architecture, verification, controlled physical validation, engineering decisions, and model limitations behind VTMS-V1.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mpalmer79.github.io/engineering/vtms.html">
+  <link rel="canonical" href="https://mpalmer79.github.io/engineering/vtms.html">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../case-study.css">
+  <title>VTMS Engineering Brief | Michael Palmer</title>
+</head>
+<body class="case-study-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="nav-shell">
+      <a class="brand" href="../" aria-label="Michael Palmer portfolio home">
+        <span class="brand-mark">MP</span>
+        <span class="brand-name">Michael Palmer</span>
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+        aria-label="Open navigation"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="VTMS engineering brief navigation">
+        <a class="back-link" href="../#projects">Back to portfolio</a>
+        <a href="#model">Model</a>
+        <a href="#validation">Validation</a>
+        <a href="#decisions">Decisions</a>
+        <a class="nav-cta" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation" target="_blank" rel="noreferrer">Source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="case-hero section-shell">
+      <div class="case-hero-grid">
+        <div class="reveal">
+          <p class="case-kicker">Engineering brief · Thermal systems · Scientific computing</p>
+          <h1>Vehicle Thermal Management Simulation</h1>
+          <p class="case-deck">
+            VTMS-V1 is a physics-based automotive thermal simulation platform built around a frozen
+            deterministic Python/SciPy model, numerical verification, controlled physical-validation
+            governance, a FastAPI execution boundary, and a responsive Next.js engineering interface.
+          </p>
+
+          <div class="case-actions">
+            <a class="button button-primary" href="https://vtms.up.railway.app" target="_blank" rel="noreferrer">View live application</a>
+            <a class="button button-secondary" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation" target="_blank" rel="noreferrer">View source</a>
+            <a class="button button-secondary" href="../#projects">Portfolio</a>
+          </div>
+        </div>
+
+        <aside class="case-status-panel reveal" aria-label="VTMS engineering status">
+          <h2>Current engineering status</h2>
+          <div class="case-status-list">
+            <div class="case-status-row">
+              <span class="case-status-label">Model</span>
+              <span class="case-status-value good">VTMS-V1 specification frozen and implemented</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Verification</span>
+              <span class="case-status-value good">Numerical verification passing</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Validation</span>
+              <span class="case-status-value fail">Controlled physical acceptance failed</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Integrity</span>
+              <span class="case-status-value">Holdout-driven retuning prohibited</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Maturity</span>
+              <span class="case-status-value">Simulation platform, not a synchronized digital twin</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <nav class="case-nav" aria-label="On this page">
+      <div class="case-nav-inner">
+        <a href="#problem">Problem</a>
+        <a href="#model">Model</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#verification">Verification</a>
+        <a href="#validation">Validation</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#boundaries">Boundaries</a>
+        <a href="#evidence">Evidence</a>
+      </div>
+    </nav>
+
+    <section class="case-section" id="problem">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Problem framing</p>
+          <h2>Build the engineering model before building the product around it.</h2>
+          <p>
+            VTMS started with a system-modeling question rather than a UI requirement: can a compact,
+            deterministic model represent the transient thermal behavior of an internal-combustion vehicle
+            cooling system well enough to support engineering analysis, and can that claim be tested without
+            confusing numerical correctness with physical accuracy?
+          </p>
+        </div>
+
+        <div class="case-problem">
+          <article class="case-copy-card reveal">
+            <h3>The engineering challenge</h3>
+            <p>
+              A thermal-management simulator has to connect heat generation, engine thermal storage,
+              coolant energy storage, engine-to-coolant transfer, radiator rejection, thermostat behavior,
+              pump flow, fan airflow, ram airflow, ambient conditions, and operating inputs through a model
+              that remains deterministic and testable.
+            </p>
+            <p>
+              The harder problem is credibility. A simulation that runs is not necessarily a model that
+              predicts reality. VTMS therefore treats model specification, numerical verification,
+              calibration, holdout validation, and product presentation as different engineering concerns.
+            </p>
+          </article>
+
+          <aside class="case-callout reveal">
+            <strong>Core question</strong>
+            <p>
+              Can the system preserve a clean evidence trail from frozen equations to implementation,
+              independent physical comparison, and an honest acceptance decision, even when the result fails?
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="model">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Model boundary</p>
+          <h2>A two-state transient thermal model.</h2>
+          <p>
+            VTMS-V1 integrates effective engine-structure temperature and bulk engine-side coolant
+            temperature. Radiator outlet temperature is algebraic rather than a third integrated state.
+          </p>
+        </div>
+
+        <article class="case-copy-card reveal">
+          <h3>Frozen governing structure</h3>
+          <p>
+            The V1 model deliberately uses a compact lumped-parameter representation. It is intended to
+            make assumptions visible, preserve deterministic behavior, and support controlled verification
+            and validation before adding more physical states.
+          </p>
+
+          <pre class="case-equations">C_e dT_e/dt = Q_engine - Q_ec - Q_ea
+C_c dT_c/dt = Q_ec - Q_rad
+
+Q_ec = UA_ec (T_e - T_c)
+Q_ea = UA_ea (T_e - T_a)
+
+States:
+T_e = effective engine-structure temperature
+T_c = bulk engine-side coolant temperature
+
+Numerics:
+SciPy solve_ivp · RK45
+rtol = 1e-6 · atol = 1e-8
+max internal step = 1 s</pre>
+        </article>
+
+        <div class="case-metrics" style="margin-top:14px;">
+          <article class="case-metric reveal">
+            <strong>2</strong>
+            <span>Integrated thermal states in the frozen V1 model</span>
+          </article>
+          <article class="case-metric reveal">
+            <strong>9</strong>
+            <span>Frozen canonical scenarios, S-01 through S-09</span>
+          </article>
+          <article class="case-metric reveal">
+            <strong>1 s</strong>
+            <span>Maximum internal solver step in the frozen V1 numerics</span>
+          </article>
+          <article class="case-metric reveal">
+            <strong>RK45</strong>
+            <span>Adaptive integration method through SciPy solve_ivp</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="architecture">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">System architecture</p>
+          <h2>Keep the physics authoritative and the product boundary clean.</h2>
+          <p>
+            The browser never calculates governing thermal physics. The web interface submits a scenario
+            through FastAPI, the authoritative Python simulation runner executes the model, and the API
+            returns the simulation record. Validation tooling remains separate from both transport and UI.
+          </p>
+        </div>
+
+        <div class="architecture-stack reveal">
+          <div class="architecture-row">
+            <div class="arch-node"><strong>Engineer / User</strong><span>Scenario definition and analysis</span></div>
+            <div class="arch-node primary"><strong>Next.js UI</strong><span>Presentation and interaction</span></div>
+            <div class="arch-node primary"><strong>FastAPI Boundary</strong><span>Validation and execution contract</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node governance"><strong>VTMS-V1 Physics Engine</strong><span>Authoritative deterministic model</span></div>
+            <div class="arch-node"><strong>Simulation Record</strong><span>States, outputs, metadata</span></div>
+            <div class="arch-node"><strong>Engineering Interface</strong><span>Plots, scenarios, interpretation</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↕</div>
+          <div class="architecture-row">
+            <div class="arch-node governance"><strong>Validation Toolkit</strong><span>Adapters, manifests, evidence roles</span></div>
+            <div class="arch-node"><strong>KIT OBD-II</strong><span>External plausibility evidence</span></div>
+            <div class="arch-node"><strong>Argonne D3</strong><span>Calibration and independent holdouts</span></div>
+          </div>
+        </div>
+
+        <p class="architecture-note reveal">
+          External datasets are normalized through explicit adapters, fingerprints, reviewed mappings,
+          immutable manifests, and evidence-role controls. Raw controlled Argonne attachments are not
+          redistributed in the repository.
+        </p>
+      </div>
+    </section>
+
+    <section class="case-section" id="verification">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Verification</p>
+          <h2>Prove the implementation before judging the model.</h2>
+          <p>
+            Numerical verification asks whether the code solves the frozen VTMS-V1 equations consistently.
+            It does not establish vehicle-specific physical accuracy.
+          </p>
+        </div>
+
+        <div class="case-metrics">
+          <article class="case-metric reveal">
+            <strong>90</strong>
+            <span>Automated Python/API tests passing across Python 3.11, 3.12, and 3.13</span>
+          </article>
+          <article class="case-metric reveal">
+            <strong>21</strong>
+            <span>Engineering verification checks passing</span>
+          </article>
+          <article class="case-metric reveal">
+            <strong>9</strong>
+            <span>Canonical scenarios frozen and implemented</span>
+          </article>
+          <article class="case-metric reveal">
+            <strong>Pass</strong>
+            <span>Energy-conservation verification status</span>
+          </article>
+        </div>
+
+        <div class="case-gate reveal">
+          <strong>Verification is not validation</strong>
+          <p>
+            Passing conservation, convergence, component invariants, regression behavior, API translation,
+            provenance, bounded calibration, identifiability, and holdout-protection checks establishes
+            implementation discipline. It does not prove that the model reproduces a real vehicle within
+            the project acceptance criteria.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="validation">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Controlled physical validation</p>
+          <h2>The model failed, and the failure was preserved.</h2>
+          <p>
+            VTMS assigns every external run exactly one evidence role before formal analysis: plausibility,
+            calibration, holdout, or challenge. Only calibration permits parameter fitting. Holdouts prohibit
+            fitting and cannot be recycled into calibration after their residuals are observed.
+          </p>
+        </div>
+
+        <div class="validation-grid">
+          <article class="validation-result-card reveal">
+            <span class="validation-role">External plausibility · KIT OBD-II</span>
+            <h3>Untuned generic V1 comparison</h3>
+            <p>
+              The model reached a similar final operating region but warmed substantially too quickly.
+              This comparison remained plausibility evidence and was not used for tuning.
+            </p>
+            <div class="result-line"><span>RMSE</span><strong>21.40 °C</strong></div>
+          </article>
+
+          <article class="validation-result-card reveal">
+            <span class="validation-role">Calibration · CAL-01</span>
+            <h3>Cold-start controlled calibration</h3>
+            <p>
+              Only wall heat fraction, effective engine capacitance, and engine-to-coolant UA were allowed
+              to move. Radiator UA remained fixed because pre-fit analysis showed weak excitation.
+            </p>
+            <div class="result-line"><span>RMSE</span><strong>3.716 °C</strong></div>
+          </article>
+
+          <article class="validation-result-card failed reveal">
+            <span class="validation-role">Calibration · CAL-RAD-01</span>
+            <h3>Radiator-active stage failed</h3>
+            <p>
+              Radiator UA was the only movable parameter. It converged near the frozen lower bound and the
+              stage failed all four core project criteria. Bounds were not widened and prior parameters were
+              not reopened.
+            </p>
+            <div class="result-line"><span>RMSE</span><strong>5.733 °C · FAIL</strong></div>
+          </article>
+
+          <article class="validation-result-card failed reveal">
+            <span class="validation-role">Primary holdout · VAL-HOT-01</span>
+            <h3>Blind holdout failed formal acceptance</h3>
+            <p>
+              The source, preprocessing map, parameter snapshot, and no-fit manifest were frozen before the
+              holdout was opened. No parameter fitting was performed on the holdout.
+            </p>
+            <div class="result-line"><span>RMSE</span><strong>8.587 °C · FAIL</strong></div>
+          </article>
+
+          <article class="validation-result-card failed reveal">
+            <span class="validation-role">Confirmatory holdout · VAL-SSS-01</span>
+            <h3>Second independent holdout also failed</h3>
+            <p>
+              The same frozen staged parameter snapshot was used without fitting. The second failure
+              strengthened the evidence that underprediction was not unique to one drive profile.
+            </p>
+            <div class="result-line"><span>RMSE</span><strong>5.126 °C · FAIL</strong></div>
+          </article>
+
+          <article class="validation-result-card reveal">
+            <span class="validation-role">Engineering interpretation</span>
+            <h3>Revise the model form, not the evidence</h3>
+            <p>
+              The two independent holdouts underpredicted final coolant temperature by approximately
+              8.5 °C. With calibrated parameters pressing against frozen bounds, the next step is a governed
+              model revision rather than more V1 parameter tuning.
+            </p>
+            <div class="result-line"><span>Decision</span><strong>V2 model-form investigation</strong></div>
+          </article>
+        </div>
+
+        <div class="case-gate reveal">
+          <strong>Formal V1 decision</strong>
+          <p>
+            VTMS-V1 did not pass its preregistered controlled physical-validation criteria. The production
+            default remains the generic V1 parameter set. Controlled calibration artifacts are preserved
+            separately and are not silently promoted into the production model.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="decisions">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering decisions</p>
+          <h2>The decisions matter as much as the solver.</h2>
+          <p>
+            The strongest VTMS evidence is not that an ODE solver runs. It is the set of controls that keep
+            implementation, calibration, validation, and product presentation from contaminating one another.
+          </p>
+        </div>
+
+        <div class="case-decisions">
+          <article class="case-decision reveal">
+            <span class="case-decision-index">01</span>
+            <h3>Freeze V1 before physical fitting</h3>
+            <p>
+              The equation set, component topology, numerics, scenarios, and calibration universe were
+              constrained before controlled residual inspection so validation could test a defined model.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">02</span>
+            <h3>Keep physics out of the browser</h3>
+            <p>
+              Next.js presents the engineering product. FastAPI validates requests and invokes the
+              authoritative Python SimulationRunner. Governing thermal calculations stay in one execution layer.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">03</span>
+            <h3>Separate verification from validation</h3>
+            <p>
+              Numerical correctness is necessary but not sufficient. The project reports passing verification
+              and failed physical validation as two simultaneous facts rather than collapsing them into one status.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">04</span>
+            <h3>Assign evidence roles before analysis</h3>
+            <p>
+              Plausibility, calibration, holdout, and challenge roles determine what an external dataset may be
+              used to claim. A holdout cannot authorize fitting after its model residual becomes known.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">05</span>
+            <h3>Use identifiability to constrain fitting</h3>
+            <p>
+              Synthetic pre-fit diagnostics showed radiator UA was weakly excited by warm-up profiles, so a
+              simultaneous four-parameter CAL-01 fit was prohibited even though an optimizer could move it.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">06</span>
+            <h3>Preserve the failed holdout</h3>
+            <p>
+              Bounds were not expanded, roles were not reassigned, and the failed holdouts were not reused for
+              V1 fitting. The evidence now supports a new model-form revision instead of post-hoc tuning.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="boundaries">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Boundaries and limitations</p>
+          <h2>State what the model does not know.</h2>
+          <p>
+            Staff-level engineering credibility depends on visible boundaries. VTMS-V1 intentionally excludes
+            several physical effects and does not claim vehicle-specific digital-twin maturity.
+          </p>
+        </div>
+
+        <div class="case-boundaries">
+          <article class="case-boundary-card reveal">
+            <h3>Not an OEM vehicle model</h3>
+            <p>
+              Effective lumped parameters are engineering abstractions. Calibrated values are not uniquely
+              identified Ford component properties and should not be interpreted as such.
+            </p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>Not a synchronized digital twin</h3>
+            <p>
+              VTMS-V1 has no live vehicle synchronization, vehicle-specific state estimation, governed online
+              calibration, or continuously synchronized telemetry loop.
+            </p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>Thermal scope is intentionally limited</h3>
+            <p>
+              V1 excludes coolant pressure and boiling, two-phase flow, detailed jacket hydraulics, oil as a
+              separate state, HVAC and heater-core loads, transmission cooling, local hot spots, and underhood CFD.
+            </p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>High-temperature fault cases are qualitative</h3>
+            <p>
+              Conditions above the liquid-only caution boundary are useful for system-behavior exploration but
+              are not predictions of boiling, mechanical damage, or vehicle safety outcomes.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="evidence">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering evidence</p>
+          <h2>Follow the claims back to the artifacts.</h2>
+          <p>
+            The brief is intentionally smaller than the repository. The links below expose the specification,
+            validation governance, controlled evidence records, source code, and deployed application.
+          </p>
+        </div>
+
+        <div class="case-evidence-grid">
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation/blob/main/docs/VTMS_V1_Engineering_Model_Specification.docx" target="_blank" rel="noreferrer">
+            <span>Specification</span>
+            <strong>VTMS-V1 Engineering Model Specification</strong>
+            <small>Frozen model definition and engineering basis.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation/blob/main/docs/VALIDATION_GOVERNANCE.md" target="_blank" rel="noreferrer">
+            <span>Governance</span>
+            <strong>Controlled Validation Governance</strong>
+            <small>Evidence roles, calibration controls, holdout protection, and acceptance rules.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation/blob/main/docs/ARGONNE_CALIBRATION_BOUNDS_AND_IDENTIFIABILITY.md" target="_blank" rel="noreferrer">
+            <span>Calibration</span>
+            <strong>Bounds and Identifiability</strong>
+            <small>Pre-fit parameter universe, frozen bounds, and staged-fitting rationale.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation/blob/main/validation_outputs/ARGONNE_VAL_HOT_01_FORMAL_RESULT.json" target="_blank" rel="noreferrer">
+            <span>Primary holdout</span>
+            <strong>VAL-HOT-01 Formal Result</strong>
+            <small>The preregistered primary physical validation failure.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation/blob/main/validation_outputs/ARGONNE_VAL_SSS_01_CONFIRMATORY_RESULT.json" target="_blank" rel="noreferrer">
+            <span>Confirmatory holdout</span>
+            <strong>VAL-SSS-01 Result</strong>
+            <small>Second independent holdout executed with the frozen staged parameter set.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation" target="_blank" rel="noreferrer">
+            <span>Source</span>
+            <strong>Complete VTMS Repository</strong>
+            <small>Physics engine, API, web application, tests, validation toolkit, and documentation.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Next governed revision</p>
+          <h2>What V2 should learn from V1.</h2>
+          <p>
+            Because the original Argonne holdouts have now been observed, they may inform V2 model development
+            but cannot be relabeled as new blind validation evidence. A revised model will require a new
+            preregistered calibration and independent-validation program.
+          </p>
+        </div>
+
+        <div class="case-production-grid">
+          <article class="case-production-card reveal">
+            <h3>Model-form investigation</h3>
+            <ul>
+              <li>Use preserved residual patterns to identify missing thermal states or topology limitations.</li>
+              <li>Justify any added state or control behavior physically before implementation.</li>
+              <li>Keep the V1 failure record intact as the baseline engineering evidence.</li>
+            </ul>
+          </article>
+
+          <article class="case-production-card reveal">
+            <h3>Higher maturity path</h3>
+            <ul>
+              <li>Add stronger uncertainty and sensitivity treatment.</li>
+              <li>Introduce vehicle-specific OBD-II/CAN replay only under explicit evidence controls.</li>
+              <li>Reserve synchronized telemetry and state estimation for a future true digital-twin maturity stage.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-footer-cta section-shell">
+      <div class="case-footer-panel reveal">
+        <div>
+          <p class="case-kicker">Engineering work</p>
+          <h2>See the model run, then inspect the evidence.</h2>
+          <p>
+            The deployed product demonstrates the engineering interface. The repository documents why the
+            model is numerically verified, why controlled physical validation failed, and what that failure means.
+          </p>
+        </div>
+
+        <div class="case-actions">
+          <a class="button button-primary" href="https://vtms.up.railway.app" target="_blank" rel="noreferrer">Launch VTMS</a>
+          <a class="button button-secondary" href="https://github.com/mpalmer79/vehicle-thermal-management-simulation" target="_blank" rel="noreferrer">Review source</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../script.js"></script>
+</body>
+</html>
