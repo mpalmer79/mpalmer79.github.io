@@ -251,16 +251,49 @@ const addNhChevyKioskCard = () => {
   projectGrid.appendChild(card);
 };
 
+const addProjectBoundaryCard = () => {
+  const projectGrid = document.querySelector('#projects .project-grid');
+  if (!projectGrid || projectGrid.querySelector('[data-project="project-boundary"]')) return;
+
+  const card = document.createElement('article');
+  card.className = 'project-card project-card-featured project-card-wide reveal';
+  card.dataset.project = 'project-boundary';
+  card.innerHTML = `
+    <div class="project-topline">
+      <span class="project-index">05</span>
+      <span class="project-status">Autonomy Safety</span>
+    </div>
+
+    <p class="project-domain">Robotics + Safety-Oriented Systems Engineering</p>
+    <h3>Project Boundary</h3>
+    <p>
+      A deterministic autonomy validation and rover safety orchestration platform built around separated motion
+      authority, fault-aware state transitions, replayable evidence, scenario verification, traceability, and a
+      parallel ROS 2 / Gazebo maturity path.
+    </p>
+
+    <div class="tag-list" aria-label="Project Boundary technologies">
+      <span>Python</span>
+      <span>ROS 2</span>
+      <span>Gazebo</span>
+      <span>Verification</span>
+      <span>Safety Architecture</span>
+    </div>
+
+    <div class="project-actions">
+      <a href="https://projectboundary.vercel.app/" target="_blank" rel="noreferrer">
+        Live application <span aria-hidden="true">↗</span>
+      </a>
+      <a href="https://github.com/mpalmer79/rover-safety-platform" target="_blank" rel="noreferrer">
+        Source code <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  `;
+
+  projectGrid.appendChild(card);
+};
+
 const projectArchive = [
-  {
-    name: 'Project Boundary',
-    domain: 'Autonomy Safety + Verification',
-    description: 'Deterministic rover safety orchestration with separated motion authority, replayable evidence, scenario verification, traceability, and a ROS 2 / Gazebo maturity path.',
-    links: [
-      ['Live', 'https://projectboundary.vercel.app/'],
-      ['Source', 'https://github.com/mpalmer79/rover-safety-platform']
-    ]
-  },
   {
     name: 'DriftGuard',
     domain: 'Fault-Tolerant Control Systems',
@@ -367,19 +400,22 @@ const curateProjectPortfolio = () => {
 
   ensurePortfolioProjectStyles();
   addNhChevyKioskCard();
+  addProjectBoundaryCard();
 
-  let projectCards = Array.from(projectGrid.querySelectorAll('.project-card'));
+  const projectCards = Array.from(projectGrid.querySelectorAll('.project-card'));
 
   prependProjectLink(projectCards, 'ARPI', 'engineering/arpi.html', 'Engineering brief');
   prependProjectLink(projectCards, 'Vehicle Thermal Management Simulation', 'engineering/vtms.html', 'Engineering brief');
   prependProjectLink(projectCards, 'LedgerLens', 'engineering/ledgerlens.html', 'Engineering brief');
   prependProjectLink(projectCards, 'NH Chevy Showroom Kiosk', 'engineering/nh-chevy-kiosk.html', 'Engineering brief');
+  prependProjectLink(projectCards, 'Project Boundary', 'engineering/project-boundary.html', 'Engineering brief');
 
   const flagshipTitles = new Set([
     'ARPI',
     'Vehicle Thermal Management Simulation',
     'LedgerLens',
-    'NH Chevy Showroom Kiosk'
+    'NH Chevy Showroom Kiosk',
+    'Project Boundary'
   ]);
 
   projectCards.forEach((card) => {
