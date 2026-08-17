@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering brief for ARPI, Michael Palmer's governed automotive retail performance intelligence platform.">
+  <meta name="author" content="Michael Palmer">
+  <meta name="theme-color" content="#08101f">
+  <meta property="og:title" content="ARPI Engineering Brief | Michael Palmer">
+  <meta property="og:description" content="Problem framing, architecture, engineering decisions, governance, evidence, and limitations behind ARPI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mpalmer79.github.io/engineering/arpi.html">
+  <link rel="canonical" href="https://mpalmer79.github.io/engineering/arpi.html">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../case-study.css">
+  <title>ARPI Engineering Brief | Michael Palmer</title>
+</head>
+<body class="case-study-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="nav-shell">
+      <a class="brand" href="../" aria-label="Michael Palmer portfolio home">
+        <span class="brand-mark">MP</span>
+        <span class="brand-name">Michael Palmer</span>
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+        aria-label="Open navigation"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Engineering brief navigation">
+        <a class="back-link" href="../#projects">Back to portfolio</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#evidence">Evidence</a>
+        <a class="nav-cta" href="https://github.com/mpalmer79/Automotive-Retail-Performance-Intelligence" target="_blank" rel="noreferrer">Source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="case-hero section-shell">
+      <div class="case-hero-grid">
+        <div class="reveal">
+          <p class="case-kicker">Engineering brief · Automotive retail intelligence</p>
+          <h1>ARPI</h1>
+          <p class="case-deck">
+            A governed management intelligence layer designed to turn fragmented dealership operating data
+            into one traceable analytical model, with consistent KPI definitions and direct evidence behind
+            the numbers managers use to make decisions.
+          </p>
+
+          <div class="case-actions">
+            <a class="button button-primary" href="https://arpi.up.railway.app" target="_blank" rel="noreferrer">View live application</a>
+            <a class="button button-secondary" href="https://github.com/mpalmer79/Automotive-Retail-Performance-Intelligence" target="_blank" rel="noreferrer">View source</a>
+            <a class="button button-secondary" href="../#projects">Portfolio</a>
+          </div>
+        </div>
+
+        <aside class="case-status-panel reveal" aria-label="ARPI engineering status">
+          <h2>Current engineering status</h2>
+          <div class="case-status-list">
+            <div class="case-status-row">
+              <span class="case-status-label">Brief</span>
+              <span class="case-status-value good">Architecture and method published</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Data</span>
+              <span class="case-status-value">Synthetic dealership operations data</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Power BI</span>
+              <span class="case-status-value pending">Real-engine validation pending</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Gate 2</span>
+              <span class="case-status-value pending">Closed</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Final case study</span>
+              <span class="case-status-value pending">Intentionally locked until Gate 2</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <nav class="case-nav" aria-label="On this page">
+      <div class="case-nav-inner">
+        <a href="#problem">Problem</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#state">Current state</a>
+        <a href="#boundaries">Boundaries</a>
+        <a href="#production">Production path</a>
+        <a href="#evidence">Evidence</a>
+      </div>
+    </nav>
+
+    <section class="case-section" id="problem">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Problem framing</p>
+          <h2>The numbers exist. The definitions do not agree.</h2>
+          <p>
+            Dealership performance data is spread across systems that were built for different operational jobs.
+            The management problem is not a lack of data. It is the absence of one governed definition for the
+            questions leadership needs answered together.
+          </p>
+        </div>
+
+        <div class="case-problem">
+          <article class="case-copy-card reveal">
+            <p>
+              Sales and gross may live in the DMS. Lead activity is in the CRM. Aging and market position sit in
+              inventory tools. F&amp;I performance, marketing spend, and accounting controls come from other systems.
+              When those systems disagree about the meaning of a retail unit, a lead cohort, gross, or inventory
+              status, the management meeting becomes a reconciliation exercise instead of a decision-making process.
+            </p>
+            <p>
+              ARPI addresses that failure by defining each management question before the metric, assigning the
+              calculation to a governed reporting layer, and preserving drill-through to the transactions or units
+              behind the aggregate.
+            </p>
+          </article>
+
+          <aside class="case-callout reveal">
+            <strong>Design objective</strong>
+            <p>
+              One analytical model, one definition per term, visible reconciliation, and enough traceability that a
+              manager does not have to accept an unexplained aggregate on faith.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="architecture">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">System architecture</p>
+          <h2>Keep operational systems authoritative. Add a governed layer above them.</h2>
+          <p>
+            The production design position is intentionally read-only. Existing dealership systems remain systems of
+            record. ARPI adds ingestion, normalization, reconciliation, and management views without writing back into
+            the operational platforms.
+          </p>
+        </div>
+
+        <div class="architecture-stack reveal" aria-label="ARPI conceptual production architecture">
+          <div class="architecture-row sources">
+            <div class="arch-node"><strong>DMS</strong><span>Deals, gross, deliveries</span></div>
+            <div class="arch-node"><strong>CRM</strong><span>Leads and activities</span></div>
+            <div class="arch-node"><strong>Inventory</strong><span>Aging and merchandising</span></div>
+            <div class="arch-node"><strong>F&amp;I</strong><span>Reserve and products</span></div>
+            <div class="arch-node"><strong>Marketing</strong><span>Spend and attribution</span></div>
+            <div class="arch-node"><strong>Accounting</strong><span>Control schedules</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node primary"><strong>Ingestion and validation</strong><span>Authorized read-only extracts</span></div>
+            <div class="arch-node primary"><strong>Governed analytical model</strong><span>Declared grain and conformed dimensions</span></div>
+            <div class="arch-node governance"><strong>Reconciliation and quality gates</strong><span>Independent checks before presentation</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node primary"><strong>Executive operating views</strong><span>Management questions and drill-through</span></div>
+            <div class="arch-node governance"><strong>Audit evidence</strong><span>Runs, row counts, validations, reconciliations</span></div>
+            <div class="arch-node"><strong>Management action</strong><span>Investigate with evidence attached</span></div>
+          </div>
+        </div>
+
+        <p class="architecture-note reveal">
+          The portfolio implementation uses deterministic synthetic data rather than live dealership integrations.
+          The architecture above represents the documented authorized production path, not a shipped DMS connector.
+        </p>
+
+        <div class="case-section-heading reveal" style="margin-top: 54px;">
+          <p class="case-kicker">Portfolio implementation</p>
+          <h2>Separate generation, validation, storage, reporting, and presentation.</h2>
+        </div>
+
+        <div class="architecture-stack reveal" aria-label="ARPI portfolio implementation architecture">
+          <div class="architecture-row">
+            <div class="arch-node"><strong>Configuration profile</strong><span>Development, test, portfolio</span></div>
+            <div class="arch-node primary"><strong>Python generator</strong><span>Seeded and deterministic</span></div>
+            <div class="arch-node governance"><strong>Validation framework</strong><span>Reject bad data before load</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node"><strong>CSV and manifest</strong><span>Content digests and lineage</span></div>
+            <div class="arch-node primary"><strong>PostgreSQL</strong><span>raw → staging → warehouse → reporting</span></div>
+            <div class="arch-node governance"><strong>Audit schema</strong><span>Pipeline and reconciliation evidence</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node primary"><strong>Governed exports</strong><span>Reporting views only</span></div>
+            <div class="arch-node primary"><strong>Next.js console</strong><span>Reads governed committed artifacts</span></div>
+            <div class="arch-node pending"><strong>Power BI semantic model</strong><span>Source built, real-engine validation pending</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="decisions">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering decisions</p>
+          <h2>The project is opinionated about where truth should live.</h2>
+          <p>
+            The most important decisions are less about framework choice and more about preventing multiple analytical
+            surfaces from silently creating different answers to the same management question.
+          </p>
+        </div>
+
+        <div class="case-decisions">
+          <article class="case-decision reveal">
+            <span class="case-decision-index">01</span>
+            <h3>Define the question before the metric</h3>
+            <p>Each governed KPI begins with a business question, declared grain, denominator, and explicit inclusion and exclusion rules.</p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">02</span>
+            <h3>Give one layer analytical authority</h3>
+            <p>The SQL reporting layer owns KPI definitions. The web console does not create a second set of formulas.</p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">03</span>
+            <h3>Reconcile rather than assert</h3>
+            <p>Critical measures are re-proved against independent derivations, and failed reconciliation is intended to remain visible.</p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">04</span>
+            <h3>Preserve drill-through</h3>
+            <p>Headline figures are designed to lead back to the deals or units that produced them instead of ending at an unexplained aggregate.</p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">05</span>
+            <h3>Represent unknown states explicitly</h3>
+            <p>Withheld samples, stale exports, unresolved comparisons, and unmet validation gates are states to surface, not blanks to hide.</p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">06</span>
+            <h3>Control scope aggressively</h3>
+            <p>The architecture explicitly excludes production DMS integration, real customer data, real-time streaming, microservices, and AI added only for presentation value.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="state">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Current repository evidence</p>
+          <h2>Show what exists, and show what does not.</h2>
+          <p>
+            These counts are presented as engineering evidence, not as business outcomes. The project deliberately
+            separates source artifacts, executed validation, deployment state, and analytical findings.
+          </p>
+        </div>
+
+        <div class="case-metrics">
+          <div class="case-metric reveal"><strong>8</strong><span>Warehouse dimensions</span></div>
+          <div class="case-metric reveal"><strong>5</strong><span>Warehouse facts</span></div>
+          <div class="case-metric reveal"><strong>28</strong><span>Reporting views</span></div>
+          <div class="case-metric reveal"><strong>29</strong><span>Governed KPIs</span></div>
+          <div class="case-metric reveal"><strong>49</strong><span>DAX measures declared in TMDL</span></div>
+          <div class="case-metric reveal"><strong>42</strong><span>Semantic model relationships</span></div>
+          <div class="case-metric caution reveal"><strong>0</strong><span>Power BI report pages currently verified</span></div>
+          <div class="case-metric caution reveal"><strong>0</strong><span>Analytical findings currently claimed</span></div>
+        </div>
+
+        <div class="case-gate reveal">
+          <strong>Gate 2 remains closed</strong>
+          <p>
+            The semantic model exists as source and is statically validated, but a Microsoft engine has not yet loaded,
+            refreshed, and evaluated it. This engineering brief therefore stops at architecture, implementation method,
+            governance, and repository evidence. It does not claim analytical conclusions or a finished Power BI case study.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="boundaries">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Tradeoffs and limitations</p>
+          <h2>Credibility requires visible boundaries.</h2>
+          <p>
+            ARPI is designed to demonstrate engineering method. The current repository explicitly documents the places
+            where portfolio evidence ends and production evidence would need to begin.
+          </p>
+        </div>
+
+        <div class="case-boundaries">
+          <article class="case-boundary-card reveal">
+            <h3>Synthetic operational data</h3>
+            <p>ARPI does not contain real dealership transactions, customers, or employees. Results describe the synthetic dataset, not the automotive retail industry.</p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>No production DMS or CRM integration</h3>
+            <p>The ingestion design is real, but it has not encountered a live vendor extract, vendor API, credential model, or real source-system inconsistency.</p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>No industry benchmark claims</h3>
+            <p>The project supports comparisons within its synthetic data. It does not label a KPI good or bad against an unsupported dealership benchmark.</p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>Semantic model execution still pending</h3>
+            <p>The Power BI model is committed and statically checked, but source existing is not the same as a Microsoft engine having executed the model.</p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>The web console is not the warehouse</h3>
+            <p>A reachable portfolio application proves the static operating console is deployed. It does not prove the PostgreSQL analytical platform is operating.</p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>ARPI is not an AI product</h3>
+            <p>The project deliberately focuses on governed analytics, reconciliation, traceability, and operational decision support without adding AI for presentation value.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="production">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Documented production path</p>
+          <h2>What changes when synthetic evidence meets an authorized dealership environment.</h2>
+          <p>
+            The documented production vision keeps the operating systems authoritative and changes the ingestion source,
+            not the core principle of one governed analytical model.
+          </p>
+        </div>
+
+        <div class="case-production-grid">
+          <article class="case-production-card reveal">
+            <h3>Portfolio implementation today</h3>
+            <ul>
+              <li>Seeded synthetic operational data</li>
+              <li>No DMS connector or vendor credential</li>
+              <li>Governed warehouse and reporting definitions</li>
+              <li>Reconciliation against generated sources</li>
+              <li>Operating console reading governed exports</li>
+            </ul>
+          </article>
+
+          <article class="case-production-card reveal">
+            <h3>Authorized dealership deployment vision</h3>
+            <ul>
+              <li>Approved read-only extracts from dealership systems</li>
+              <li>Vendor-specific authorized ingestion paths</li>
+              <li>The same governed analytical model loaded from real extracts</li>
+              <li>Reconciliation against the dealership's own records</li>
+              <li>Operational systems remain authoritative and receive no write-back</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="evidence">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering evidence</p>
+          <h2>Review the decisions, not just the screenshots.</h2>
+          <p>
+            The repository is structured so a technical reviewer can inspect architecture, KPI definitions, limitations,
+            privacy boundaries, and the implementation itself.
+          </p>
+        </div>
+
+        <div class="case-evidence-grid">
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/Automotive-Retail-Performance-Intelligence" target="_blank" rel="noreferrer">
+            <span>Repository</span>
+            <strong>Source code</strong>
+            <small>Implementation, tests, documentation, CI, and project history.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/Automotive-Retail-Performance-Intelligence/blob/main/ARCHITECTURE.md" target="_blank" rel="noreferrer">
+            <span>Architecture</span>
+            <strong>System design</strong>
+            <small>Goals, non-goals, data strategy, layers, and design decisions.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/Automotive-Retail-Performance-Intelligence/blob/main/KPI_CATALOG.md" target="_blank" rel="noreferrer">
+            <span>Governance</span>
+            <strong>KPI catalog</strong>
+            <small>Declared business questions, grains, denominators, and metric definitions.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/Automotive-Retail-Performance-Intelligence/blob/main/LIMITATIONS.md" target="_blank" rel="noreferrer">
+            <span>Boundaries</span>
+            <strong>Limitations register</strong>
+            <small>Verified project state, gaps, caveats, and operational readiness boundaries.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/Automotive-Retail-Performance-Intelligence/blob/main/PRIVACY_AND_ETHICS.md" target="_blank" rel="noreferrer">
+            <span>Governance</span>
+            <strong>Privacy and ethics</strong>
+            <small>Data minimization, synthetic-data disclosures, and prohibited identifiers.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://arpi.up.railway.app" target="_blank" rel="noreferrer">
+            <span>Interface</span>
+            <strong>Live operating console</strong>
+            <small>Portfolio presentation over governed exported artifacts.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-footer-cta section-shell">
+      <div class="case-footer-panel reveal">
+        <div>
+          <p class="case-kicker">Portfolio direction</p>
+          <h2>The framework is reusable.</h2>
+          <p>
+            ARPI is the first engineering brief in this format. The same structure can be applied to Vehicle Thermal
+            Management Simulation and LedgerLens so the portfolio demonstrates a consistent engineering method across domains.
+          </p>
+        </div>
+        <div class="case-actions">
+          <a class="button button-primary" href="../#projects">Return to projects</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-shell footer-inner">
+      <div>
+        <strong>Michael Palmer</strong>
+        <p>Computer Science • AI Engineering • Automotive Technology</p>
+      </div>
+      <div class="footer-links">
+        <a href="../">Portfolio</a>
+        <a href="https://github.com/mpalmer79" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/in/mpalmer1234/" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+      <p class="copyright">© <span id="current-year"></span> Michael Palmer</p>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>
