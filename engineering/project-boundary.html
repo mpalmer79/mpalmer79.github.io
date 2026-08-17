@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering brief for Project Boundary, Michael Palmer's deterministic autonomy validation and rover safety orchestration platform.">
+  <meta name="author" content="Michael Palmer">
+  <meta name="theme-color" content="#08101f">
+  <meta property="og:title" content="Project Boundary Engineering Brief | Michael Palmer">
+  <meta property="og:description" content="Safety authority, deterministic autonomy, fault injection, replay, verification evidence, and ROS 2 / Gazebo maturity behind Project Boundary.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mpalmer79.github.io/engineering/project-boundary.html">
+  <link rel="canonical" href="https://mpalmer79.github.io/engineering/project-boundary.html">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../case-study.css">
+  <title>Project Boundary Engineering Brief | Michael Palmer</title>
+</head>
+<body class="case-study-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="nav-shell">
+      <a class="brand" href="../" aria-label="Michael Palmer portfolio home">
+        <span class="brand-mark">MP</span>
+        <span class="brand-name">Michael Palmer</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Project Boundary engineering brief navigation">
+        <a class="back-link" href="../#projects">Back to portfolio</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#verification">Verification</a>
+        <a href="#decisions">Decisions</a>
+        <a class="nav-cta" href="https://github.com/mpalmer79/rover-safety-platform" target="_blank" rel="noreferrer">Source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="case-hero section-shell">
+      <div class="case-hero-grid">
+        <div class="reveal">
+          <p class="case-kicker">Engineering brief · Autonomy safety · Verification</p>
+          <h1>Project Boundary</h1>
+          <p class="case-deck">
+            A deterministic autonomy validation and safety orchestration platform for unmanned ground vehicles.
+            The central engineering question is not whether the rover can move, but whether the architecture can
+            prove that motion remains bounded, safety-authorized, explainable, and reconstructable under faults.
+          </p>
+
+          <div class="case-actions">
+            <a class="button button-primary" href="https://projectboundary.vercel.app/" target="_blank" rel="noreferrer">View live application</a>
+            <a class="button button-secondary" href="https://github.com/mpalmer79/rover-safety-platform" target="_blank" rel="noreferrer">View source</a>
+            <a class="button button-secondary" href="../#projects">Portfolio</a>
+          </div>
+        </div>
+
+        <aside class="case-status-panel reveal" aria-label="Project Boundary engineering status">
+          <h2>Current engineering status</h2>
+          <div class="case-status-list">
+            <div class="case-status-row">
+              <span class="case-status-label">Core</span>
+              <span class="case-status-value good">Deterministic Python safety runtime implemented</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Scenarios</span>
+              <span class="case-status-value good">14 of 14 deterministic verification scenarios passed</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">ROS 2</span>
+              <span class="case-status-value">Jazzy / Gazebo integration implemented with static validation</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Runtime</span>
+              <span class="case-status-value pending">End-to-end ROS execution requires a Jazzy host</span>
+            </div>
+            <div class="case-status-row">
+              <span class="case-status-label">Safety</span>
+              <span class="case-status-value pending">Engineering demonstration, not safety-certified</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <nav class="case-nav" aria-label="Project Boundary page sections">
+      <div class="case-nav-inner">
+        <a href="#problem">Problem</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#verification">Verification</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#boundaries">Boundaries</a>
+        <a href="#evidence">Evidence</a>
+      </div>
+    </nav>
+
+    <section class="case-section" id="problem">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Problem framing</p>
+          <h2>Make unsafe motion structurally difficult.</h2>
+          <p>
+            Autonomy systems become difficult to trust when mission logic, sensor health, safety state, and
+            actuator authority blur together. Project Boundary separates those concerns so the system can answer
+            who requested motion, who authorized it, what condition changed, and why the final command was allowed.
+          </p>
+        </div>
+
+        <div class="case-problem">
+          <article class="case-copy-card reveal">
+            <p>
+              Mission software is allowed to request movement. It is not allowed to authorize movement. Every
+              actuator command must pass through the safety supervisor and motion-arbitration boundary before the
+              hardware gateway can execute it.
+            </p>
+            <p>
+              Fault injection follows the same rule. Faults alter inputs, timing, freshness, or confidence and
+              force the normal safety path to react. They do not reach into the state machine and set a convenient
+              result directly.
+            </p>
+          </article>
+
+          <aside class="case-callout reveal">
+            <strong>Architectural thesis</strong>
+            <p>
+              Mission systems may request motion. Only the safety system may authorize motion.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="architecture">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Runtime architecture</p>
+          <h2>Separate intent from authority.</h2>
+          <p>
+            The critical path is deliberately small. Mission intent, sensor confidence, safety enforcement,
+            motion arbitration, and actuator execution are isolated so each boundary can be tested and audited.
+          </p>
+        </div>
+
+        <div class="architecture-stack reveal" aria-label="Project Boundary runtime architecture">
+          <div class="architecture-row">
+            <div class="arch-node"><strong>Mission Runtime</strong><span>Waypoints, recovery, requested motion</span></div>
+            <div class="arch-node governance"><strong>Confidence + Freshness</strong><span>Sensor health, disagreement, watchdog inputs</span></div>
+            <div class="arch-node"><strong>Operator Path</strong><span>E-stop, recovery, reset authority</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node primary"><strong>Safety Supervisor</strong><span>Owns safety state and final motion authorization</span></div>
+            <div class="arch-node primary"><strong>Motion Arbitration</strong><span>Clamps, drops, restricts, or zeroes requested motion</span></div>
+            <div class="arch-node primary"><strong>Hardware Gateway</strong><span>Executes authorized commands only</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node governance"><strong>Structured Events</strong><span>Transitions, reasons, faults, commands</span></div>
+            <div class="arch-node governance"><strong>Replay + Evidence</strong><span>Incident reconstruction and verification artifacts</span></div>
+            <div class="arch-node pending"><strong>ROS 2 / Gazebo Runtime</strong><span>Parallel integration path requiring a Jazzy host for end-to-end execution</span></div>
+          </div>
+        </div>
+
+        <p class="architecture-note reveal">
+          In the ROS 2 integration, mission and operator code publish requested motion, the safety bridge is the
+          only producer of authorized motion, and the Gazebo bridge forwards only the authorized command path.
+        </p>
+
+        <div class="case-gate reveal">
+          <strong>Safety authority boundary</strong>
+          <p>
+            The hardware gateway subscribes to the authorized command channel, not the requested command channel.
+            SAFE_STOP and E_STOP_LATCHED actively publish zero motion. Recovery is gated rather than treated as an
+            automatic return to normal operation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="verification">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Verification evidence</p>
+          <h2>Test the authority model under failure.</h2>
+          <p>
+            The deterministic verification engine exercises nominal operation, sensor degradation, command loss,
+            bridge disconnects, E-stop behavior, mission recovery, keepout constraints, restricted operation, and
+            fault escalation. Each scenario records the expected state, events, command-path audit, transition audit,
+            and replay-integrity result.
+          </p>
+        </div>
+
+        <div class="case-metrics">
+          <div class="case-metric reveal"><strong>14</strong><span>verification scenarios executed</span></div>
+          <div class="case-metric reveal"><strong>14</strong><span>scenarios passed in the deterministic engine</span></div>
+          <div class="case-metric reveal"><strong>0</strong><span>failed, partial, skipped, or not-executed scenarios in that report</span></div>
+          <div class="case-metric caution reveal"><strong>Not certified</strong><span>verification evidence is not functional-safety certification</span></div>
+        </div>
+
+        <div class="case-boundaries" style="margin-top: 20px;">
+          <article class="case-boundary-card reveal">
+            <h3>Fault behavior is exercised through normal pathways</h3>
+            <p>
+              Stale LiDAR, sensor disagreement, command timeout, bridge disconnect, wheel slip, and related faults
+              alter conditions the supervisor observes. The verifier checks the resulting transition and command behavior.
+            </p>
+          </article>
+          <article class="case-boundary-card reveal">
+            <h3>Safe-stop zero motion is explicitly checked</h3>
+            <p>
+              Scenarios that terminate in SAFE_STOP or E_STOP_LATCHED include a zero-motion assertion rather than
+              assuming the state label alone proves actuator behavior.
+            </p>
+          </article>
+          <article class="case-boundary-card reveal">
+            <h3>Replay integrity is part of the result</h3>
+            <p>
+              Verification includes replay-integrity and safety-transition audits so a passing outcome retains the
+              evidence needed to reconstruct why the system reached that outcome.
+            </p>
+          </article>
+          <article class="case-boundary-card reveal">
+            <h3>ROS runtime maturity is reported separately</h3>
+            <p>
+              Deterministic-engine scenario success is not presented as proof that every ROS 2 / Gazebo runtime path
+              has executed live. Static validation and host-dependent execution remain distinct claims.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="decisions">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering decisions</p>
+          <h2>Optimize for inspectability, not novelty.</h2>
+          <p>
+            The strongest design choices are the constraints that make later verification possible.
+          </p>
+        </div>
+
+        <div class="case-decisions">
+          <article class="case-decision reveal">
+            <span class="case-decision-index">01</span>
+            <h3>One subsystem owns motion authorization</h3>
+            <p>
+              The safety supervisor owns the final authorization boundary. Mission software can request movement but
+              cannot bypass arbitration or write directly to actuator interfaces.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">02</span>
+            <h3>Determinism stays in the critical path</h3>
+            <p>
+              Critical safety behavior favors bounded state transitions, explicit limits, reproducible scenarios,
+              and reason-coded decisions over probabilistic autonomy.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">03</span>
+            <h3>Fault injection changes inputs, not outcomes</h3>
+            <p>
+              A fault may disturb sensor data, timing, freshness, or a watchdog. It may not set the safety state
+              directly, preserving causal fidelity in the test path.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">04</span>
+            <h3>Replay is an operational requirement</h3>
+            <p>
+              State transitions, actuator commands, confidence changes, mission events, and safety interventions are
+              recorded so incidents can be reconstructed rather than explained from memory.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">05</span>
+            <h3>Simulation and hardware share contracts</h3>
+            <p>
+              The deterministic core and the ROS 2 / Gazebo path preserve the same requested-versus-authorized motion
+              model so simulation does not become a separate architectural universe.
+            </p>
+          </article>
+
+          <article class="case-decision reveal">
+            <span class="case-decision-index">06</span>
+            <h3>Report incomplete evidence honestly</h3>
+            <p>
+              Runtime reports distinguish passed, failed, partial, skipped, and not-executed states. Host-dependent
+              ROS execution is not silently promoted into a stronger claim than the evidence supports.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="boundaries">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Boundaries and limitations</p>
+          <h2>Safety-oriented does not mean safety-certified.</h2>
+          <p>
+            Project Boundary is an engineering-learning and portfolio system. Its value comes from the architecture
+            and verification discipline it demonstrates, not from implying compliance or real-world certification.
+          </p>
+        </div>
+
+        <div class="case-boundaries">
+          <article class="case-boundary-card reveal">
+            <h3>No functional-safety certification claim</h3>
+            <p>
+              The safety model explicitly does not claim ISO 13849, ISO 26262, IEC 61508, or other functional-safety certification.
+            </p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>Live ROS execution is environment-dependent</h3>
+            <p>
+              The ROS 2 Jazzy / Gazebo Harmonic path is implemented and statically validated, but full end-to-end
+              runtime verification requires a compatible Jazzy host.
+            </p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>Simulation is not hardware validation</h3>
+            <p>
+              The platform is simulation-first. Shared contracts reduce architectural drift, but physical actuators,
+              hardware timing, transport failures, and real sensor behavior remain a separate validation problem.
+            </p>
+          </article>
+
+          <article class="case-boundary-card reveal">
+            <h3>Autonomy scope is deliberately bounded</h3>
+            <p>
+              Camera-first perception, uncontrolled AI autonomy, reinforcement-learning control, swarms, and other
+              complexity are deferred so safety authority, replay, and fault behavior remain inspectable.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="evidence">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering evidence</p>
+          <h2>Follow the safety claims back to the artifacts.</h2>
+          <p>
+            The repository is organized so architecture, safety rules, scenario results, generated evidence, and
+            implementation can be reviewed together.
+          </p>
+        </div>
+
+        <div class="case-evidence-grid">
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/rover-safety-platform/blob/main/ARCHITECTURE.md" target="_blank" rel="noreferrer">
+            <span>Architecture</span>
+            <strong>System Architecture</strong>
+            <small>Runtime topology, subsystem boundaries, ROS 2 integration, simulation, observability, and hardware path.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/rover-safety-platform/blob/main/docs/SAFETY_MODEL.md" target="_blank" rel="noreferrer">
+            <span>Safety model</span>
+            <strong>Authority and State Machine</strong>
+            <small>Motion authorization rules, anti-bypass constraints, recovery, watchdogs, and E-stop semantics.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/rover-safety-platform/blob/main/docs/SCENARIO_VERIFICATION_REPORT.md" target="_blank" rel="noreferrer">
+            <span>Verification</span>
+            <strong>Scenario Verification Report</strong>
+            <small>Generated deterministic-engine results for the 14 verified scenarios.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/rover-safety-platform/blob/main/docs/TRACEABILITY_MATRIX.md" target="_blank" rel="noreferrer">
+            <span>Traceability</span>
+            <strong>Requirements Traceability</strong>
+            <small>Requirements linked to architecture, implementation, scenarios, tests, and evidence.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/rover-safety-platform/blob/main/docs/VERIFICATION_STRATEGY.md" target="_blank" rel="noreferrer">
+            <span>Method</span>
+            <strong>Verification Strategy</strong>
+            <small>How deterministic scenarios, audits, evidence generation, and runtime qualification are separated.</small>
+          </a>
+
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/rover-safety-platform" target="_blank" rel="noreferrer">
+            <span>Source</span>
+            <strong>Complete Project Boundary Repository</strong>
+            <small>Python core, ROS 2 workspace, verification tooling, evidence artifacts, documentation, and reviewer exports.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Maturity path</p>
+          <h2>Preserve the authority model as realism increases.</h2>
+          <p>
+            The next maturity steps are not about adding autonomous behavior for its own sake. They are about proving
+            the same safety and replay contracts under more realistic middleware, simulation, timing, and hardware conditions.
+          </p>
+        </div>
+
+        <div class="case-production-grid">
+          <article class="case-production-card reveal">
+            <h3>Current evidence</h3>
+            <ul>
+              <li>Dependency-light deterministic Python safety and mission core.</li>
+              <li>Generated scenario verification and replay evidence.</li>
+              <li>ROS 2 Jazzy / Gazebo workspace with static architectural validation.</li>
+              <li>Reviewer-oriented traceability and evidence exports.</li>
+            </ul>
+          </article>
+
+          <article class="case-production-card reveal">
+            <h3>Higher maturity</h3>
+            <ul>
+              <li>Run repeatable end-to-end Jazzy / Gazebo qualification in a supported host environment.</li>
+              <li>Capture real rosbag / MCAP runtime evidence and source-change series.</li>
+              <li>Exercise the same authorization contracts against physical hardware and real sensor timing.</li>
+              <li>Keep probabilistic features advisory unless a governed safety argument justifies otherwise.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-footer-cta section-shell">
+      <div class="case-footer-panel reveal">
+        <div>
+          <p class="case-kicker">Engineering work</p>
+          <h2>Inspect the safety boundary, not just the rover demo.</h2>
+          <p>
+            The live interface is the entry point. The engineering evidence is in the authority model, scenario
+            verifier, replay artifacts, traceability, and explicit separation between demonstrated and future maturity.
+          </p>
+        </div>
+
+        <div class="case-actions">
+          <a class="button button-primary" href="https://projectboundary.vercel.app/" target="_blank" rel="noreferrer">Launch Project Boundary</a>
+          <a class="button button-secondary" href="https://github.com/mpalmer79/rover-safety-platform" target="_blank" rel="noreferrer">Review source</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../script.js"></script>
+</body>
+</html>
