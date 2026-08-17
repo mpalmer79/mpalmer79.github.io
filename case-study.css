@@ -109,6 +109,10 @@
   color: var(--accent-soft);
 }
 
+.case-status-value.fail {
+  color: #ff9d9d;
+}
+
 .case-nav {
   position: sticky;
   top: var(--header-height);
@@ -188,7 +192,8 @@
 .case-boundary-card,
 .case-evidence-card,
 .case-metric,
-.case-production-card {
+.case-production-card,
+.validation-result-card {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.026);
@@ -467,6 +472,78 @@
   line-height: 1.45;
 }
 
+.case-equations {
+  margin: 20px 0 0;
+  padding: 22px;
+  overflow-x: auto;
+  border: 1px solid rgba(99, 184, 255, 0.18);
+  border-radius: 16px;
+  background: rgba(5, 12, 24, 0.72);
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.85;
+  white-space: pre-wrap;
+}
+
+.validation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.validation-result-card {
+  padding: 24px;
+}
+
+.validation-result-card .validation-role {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--accent);
+  font-size: 0.74rem;
+  font-weight: 780;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.validation-result-card h3 {
+  margin-bottom: 9px;
+  font-size: 1.15rem;
+}
+
+.validation-result-card p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.validation-result-card .result-line {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--text-soft);
+  font-size: 0.86rem;
+}
+
+.validation-result-card .result-line strong {
+  color: var(--text);
+}
+
+.validation-result-card.failed {
+  border-color: rgba(255, 157, 157, 0.22);
+  background:
+    linear-gradient(145deg, rgba(255, 120, 120, 0.045), transparent 48%),
+    rgba(255, 255, 255, 0.026);
+}
+
+.validation-result-card.failed .validation-role,
+.validation-result-card.failed .result-line strong {
+  color: #ff9d9d;
+}
+
 .case-footer-cta {
   padding: 74px 0 96px;
 }
@@ -535,7 +612,8 @@
   .case-evidence-grid,
   .case-metrics,
   .architecture-row,
-  .architecture-row.sources {
+  .architecture-row.sources,
+  .validation-grid {
     grid-template-columns: 1fr;
   }
 
@@ -549,12 +627,18 @@
   .case-boundary-card,
   .case-production-card,
   .case-status-panel,
-  .case-footer-panel {
+  .case-footer-panel,
+  .validation-result-card {
     padding: 20px;
   }
 
   .case-status-row {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .case-equations {
+    padding: 18px;
+    font-size: 0.82rem;
   }
 }
