@@ -642,3 +642,175 @@
     font-size: 0.82rem;
   }
 }
+
+/* Natural ambient theme for engineering briefs */
+.case-study-page {
+  --bg: #18272e;
+  --bg-soft: #203239;
+  --surface: rgba(35, 53, 59, 0.84);
+  --surface-strong: #293d43;
+  --surface-light: #31484d;
+  --text: #f4f3ed;
+  --text-soft: #c8d2ce;
+  --text-muted: #94a6a2;
+  --line: rgba(226, 236, 231, 0.12);
+  --line-strong: rgba(226, 236, 231, 0.2);
+  --accent: #82c6cc;
+  --accent-soft: #a7d4bd;
+  --accent-warm: #e6c38d;
+  --success: #9ed4b4;
+  --shadow: 0 24px 70px rgba(9, 20, 22, 0.22);
+  background:
+    radial-gradient(circle at 8% 5%, rgba(126, 191, 198, 0.16), transparent 24%),
+    radial-gradient(circle at 90% 12%, rgba(166, 211, 188, 0.12), transparent 22%),
+    linear-gradient(180deg, #18272e 0%, #1d3035 24%, #273a37 48%, #303940 72%, #1d2e34 100%);
+}
+
+.case-study-page::before {
+  opacity: 0.08;
+}
+
+.case-study-page .site-header {
+  background: rgba(28, 43, 48, 0.82);
+}
+
+.case-study-page .site-header.scrolled {
+  background: rgba(28, 43, 48, 0.94);
+}
+
+.case-nav {
+  background: rgba(31, 47, 51, 0.88);
+}
+
+.case-hero {
+  position: relative;
+  isolation: isolate;
+}
+
+.case-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -40px 50% -24px;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background:
+    radial-gradient(circle at 78% 20%, rgba(166, 211, 188, 0.11), transparent 28%),
+    radial-gradient(circle at 16% 46%, rgba(126, 191, 198, 0.1), transparent 30%);
+  pointer-events: none;
+}
+
+.case-section {
+  position: relative;
+  isolation: isolate;
+  border-top-color: rgba(226, 236, 231, 0.08);
+}
+
+.case-section:nth-of-type(3n + 2) {
+  background: linear-gradient(180deg, rgba(88, 132, 128, 0.055), rgba(51, 67, 65, 0.025));
+}
+
+.case-section:nth-of-type(3n) {
+  background:
+    radial-gradient(circle at 86% 28%, rgba(230, 195, 141, 0.055), transparent 22%),
+    linear-gradient(180deg, rgba(70, 78, 62, 0.04), rgba(47, 61, 63, 0.025));
+}
+
+.case-section:nth-of-type(3n + 1) {
+  background:
+    radial-gradient(circle at 12% 44%, rgba(126, 191, 198, 0.06), transparent 24%),
+    linear-gradient(180deg, rgba(48, 64, 68, 0.025), rgba(58, 72, 68, 0.04));
+}
+
+.case-status-panel,
+.case-copy-card,
+.case-decision,
+.case-boundary-card,
+.case-evidence-card,
+.case-metric,
+.case-production-card,
+.validation-result-card {
+  border-color: rgba(226, 236, 231, 0.12);
+  background: linear-gradient(180deg, rgba(239, 242, 236, 0.048), rgba(239, 242, 236, 0.022));
+  box-shadow: 0 14px 38px rgba(10, 25, 27, 0.07);
+}
+
+.case-status-panel {
+  background:
+    linear-gradient(150deg, rgba(130, 198, 204, 0.11), transparent 38%),
+    linear-gradient(330deg, rgba(167, 212, 189, 0.055), transparent 44%),
+    rgba(38, 57, 61, 0.8);
+}
+
+.case-callout {
+  border-color: rgba(167, 212, 189, 0.18);
+  background:
+    linear-gradient(150deg, rgba(167, 212, 189, 0.105), transparent 42%),
+    rgba(39, 57, 59, 0.72);
+}
+
+.arch-node {
+  background: rgba(42, 61, 64, 0.72);
+}
+
+.arch-node.primary {
+  border-color: rgba(130, 198, 204, 0.3);
+  background:
+    linear-gradient(145deg, rgba(130, 198, 204, 0.11), transparent 46%),
+    rgba(42, 61, 64, 0.8);
+}
+
+.arch-node.governance {
+  border-color: rgba(167, 212, 189, 0.3);
+}
+
+.arch-node.pending {
+  border-color: rgba(230, 195, 141, 0.38);
+}
+
+.case-gate {
+  border-color: rgba(230, 195, 141, 0.28);
+  background: rgba(230, 195, 141, 0.055);
+}
+
+.case-equations {
+  border-color: rgba(130, 198, 204, 0.18);
+  background: rgba(24, 39, 44, 0.84);
+}
+
+.case-evidence-card:hover,
+.case-evidence-card:focus-visible {
+  border-color: rgba(130, 198, 204, 0.34);
+  background: rgba(130, 198, 204, 0.06);
+}
+
+.case-footer-cta {
+  position: relative;
+  isolation: isolate;
+}
+
+.case-footer-cta::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: linear-gradient(180deg, rgba(44, 62, 63, 0.02), rgba(74, 79, 61, 0.06));
+}
+
+.case-footer-panel {
+  border-color: rgba(130, 198, 204, 0.2);
+  background:
+    linear-gradient(145deg, rgba(130, 198, 204, 0.1), transparent 46%),
+    linear-gradient(330deg, rgba(230, 195, 141, 0.04), transparent 44%),
+    rgba(39, 57, 60, 0.78);
+}
+
+@media (max-width: 720px) {
+  .case-study-page {
+    background:
+      radial-gradient(circle at 78% 4%, rgba(166, 211, 188, 0.11), transparent 20%),
+      linear-gradient(180deg, #18272e 0%, #213536 38%, #303a35 62%, #26373b 82%, #1d2e34 100%);
+  }
+}
