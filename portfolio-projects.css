@@ -1,3 +1,174 @@
+:root {
+  --bg: #18272e;
+  --bg-soft: #203239;
+  --surface: rgba(35, 53, 59, 0.84);
+  --surface-strong: #293d43;
+  --surface-light: #31484d;
+  --text: #f4f3ed;
+  --text-soft: #c8d2ce;
+  --text-muted: #94a6a2;
+  --line: rgba(226, 236, 231, 0.12);
+  --line-strong: rgba(226, 236, 231, 0.2);
+  --accent: #82c6cc;
+  --accent-soft: #a7d4bd;
+  --accent-warm: #e6c38d;
+  --success: #9ed4b4;
+  --shadow: 0 24px 70px rgba(9, 20, 22, 0.22);
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 4%, rgba(126, 191, 198, 0.18), transparent 24%),
+    radial-gradient(circle at 88% 12%, rgba(166, 211, 188, 0.14), transparent 22%),
+    radial-gradient(circle at 18% 56%, rgba(221, 190, 139, 0.09), transparent 24%),
+    radial-gradient(circle at 82% 78%, rgba(111, 151, 158, 0.12), transparent 26%),
+    linear-gradient(
+      180deg,
+      #18272e 0%,
+      #1c3035 17%,
+      #243937 34%,
+      #303b34 50%,
+      #303940 67%,
+      #24363b 84%,
+      #1b2b31 100%
+    );
+}
+
+body::before {
+  opacity: 0.1;
+  background-image:
+    linear-gradient(rgba(232, 239, 235, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 239, 235, 0.025) 1px, transparent 1px);
+}
+
+.site-header {
+  background: rgba(28, 43, 48, 0.72);
+}
+
+.site-header.scrolled {
+  background: rgba(28, 43, 48, 0.92);
+}
+
+.brand-mark {
+  border-color: rgba(130, 198, 204, 0.42);
+  background: linear-gradient(145deg, rgba(130, 198, 204, 0.18), rgba(167, 212, 189, 0.08));
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #82c6cc, #acd5c2);
+  color: #142429;
+  box-shadow: 0 12px 30px rgba(86, 145, 148, 0.2);
+}
+
+.button-primary:hover,
+.button-primary:focus-visible {
+  background: linear-gradient(135deg, #93d0d4, #b9dccb);
+}
+
+.button-secondary {
+  background: rgba(239, 242, 236, 0.045);
+}
+
+.hero-panel {
+  border-color: rgba(188, 217, 207, 0.2);
+  background:
+    linear-gradient(155deg, rgba(126, 191, 198, 0.12), transparent 32%),
+    linear-gradient(330deg, rgba(166, 211, 188, 0.07), transparent 38%),
+    rgba(37, 55, 60, 0.86);
+}
+
+.status-card {
+  border-color: rgba(158, 212, 180, 0.22);
+  background: linear-gradient(135deg, rgba(158, 212, 180, 0.09), rgba(130, 198, 204, 0.035));
+}
+
+.section {
+  position: relative;
+  isolation: isolate;
+}
+
+#about::before,
+#projects::before,
+#skills::before,
+#experience::before,
+#education::before,
+#contact::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  z-index: -1;
+  pointer-events: none;
+}
+
+#about::before {
+  background: linear-gradient(180deg, transparent, rgba(115, 161, 157, 0.075) 44%, transparent);
+}
+
+#projects::before {
+  background:
+    radial-gradient(circle at 82% 24%, rgba(126, 191, 198, 0.095), transparent 28%),
+    linear-gradient(180deg, rgba(36, 59, 57, 0.16), rgba(38, 56, 59, 0.06));
+}
+
+#skills::before {
+  background:
+    radial-gradient(circle at 12% 48%, rgba(183, 193, 148, 0.075), transparent 26%),
+    linear-gradient(180deg, rgba(51, 62, 51, 0.08), rgba(45, 57, 61, 0.05));
+}
+
+#experience::before {
+  background: linear-gradient(180deg, rgba(45, 55, 61, 0.04), rgba(128, 108, 82, 0.065), rgba(44, 57, 60, 0.04));
+}
+
+#education::before {
+  background:
+    radial-gradient(circle at 82% 28%, rgba(167, 212, 189, 0.09), transparent 25%),
+    linear-gradient(180deg, rgba(47, 64, 58, 0.07), rgba(37, 55, 60, 0.04));
+}
+
+#contact::before {
+  background:
+    radial-gradient(circle at 20% 62%, rgba(230, 195, 141, 0.075), transparent 24%),
+    linear-gradient(180deg, rgba(37, 54, 59, 0.02), rgba(31, 47, 51, 0.12));
+}
+
+.principles-grid article,
+.skill-card,
+.education-card,
+.education-panel,
+.learning-card,
+.project-card {
+  border-color: rgba(226, 236, 231, 0.12);
+  background: linear-gradient(180deg, rgba(239, 242, 236, 0.045), rgba(239, 242, 236, 0.022));
+  box-shadow: 0 16px 42px rgba(10, 25, 27, 0.08);
+}
+
+.project-card-featured {
+  background:
+    linear-gradient(145deg, rgba(130, 198, 204, 0.1), transparent 42%),
+    linear-gradient(330deg, rgba(167, 212, 189, 0.055), transparent 48%),
+    rgba(239, 242, 236, 0.028);
+}
+
+.project-card:hover {
+  border-color: rgba(130, 198, 204, 0.32);
+  background:
+    linear-gradient(145deg, rgba(130, 198, 204, 0.11), transparent 44%),
+    rgba(239, 242, 236, 0.035);
+}
+
+.tag-list span,
+.skill-list span,
+.education-topics span {
+  border-color: rgba(226, 236, 231, 0.11);
+  background: rgba(236, 241, 235, 0.04);
+}
+
 .project-card-wide {
   grid-column: 1 / -1;
   min-height: 340px;
@@ -50,7 +221,7 @@
 }
 
 .project-archive-row:hover {
-  background: linear-gradient(90deg, rgba(99, 184, 255, 0.035), transparent 70%);
+  background: linear-gradient(90deg, rgba(130, 198, 204, 0.05), transparent 70%);
 }
 
 .project-archive-name {
@@ -123,6 +294,12 @@
 }
 
 @media (max-width: 680px) {
+  body {
+    background:
+      radial-gradient(circle at 76% 6%, rgba(166, 211, 188, 0.12), transparent 20%),
+      linear-gradient(180deg, #18272e 0%, #213536 35%, #303a35 58%, #25363a 78%, #1c2d32 100%);
+  }
+
   .project-card-wide {
     grid-column: auto;
     min-height: 0;
