@@ -1,9 +1,9 @@
 .hero h1 {
-  max-width: 13ch;
+  max-width: 16ch;
   margin-bottom: 22px;
-  font-size: clamp(2.8rem, 4.5vw, 4.8rem);
-  line-height: 1.03;
-  letter-spacing: -0.045em;
+  font-size: clamp(2.35rem, 3.2vw, 3.8rem);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
 }
 
 .hero-panel {
@@ -119,6 +119,11 @@
 }
 
 @media (max-width: 1040px) {
+  .hero h1 {
+    font-size: clamp(2.3rem, 5vw, 3.35rem);
+    max-width: 15ch;
+  }
+
   .hero-panel {
     width: 100%;
     max-width: 520px;
@@ -131,8 +136,9 @@
 
 @media (max-width: 620px) {
   .hero h1 {
-    font-size: clamp(2.45rem, 10vw, 3.6rem);
-    max-width: 12ch;
+    font-size: clamp(2rem, 8.5vw, 2.8rem);
+    max-width: 14ch;
+    line-height: 1.08;
   }
 
   .hero-panel {
