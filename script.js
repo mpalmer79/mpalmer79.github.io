@@ -181,6 +181,15 @@ const renderEducationV2 = () => {
 
 renderEducationV2();
 
+const ensurePortfolioProjectStyles = () => {
+  if (document.querySelector('link[href="portfolio-projects.css"]')) return;
+
+  const projectStyles = document.createElement('link');
+  projectStyles.rel = 'stylesheet';
+  projectStyles.href = 'portfolio-projects.css';
+  document.head.appendChild(projectStyles);
+};
+
 const prependProjectLink = (projectCards, title, href, label) => {
   const card = projectCards.find((projectCard) => projectCard.querySelector('h3')?.textContent.trim() === title);
   if (!card) return;
@@ -205,28 +214,28 @@ const addNhChevyKioskCard = () => {
   if (!projectGrid || projectGrid.querySelector('[data-project="nh-chevy-kiosk"]')) return;
 
   const card = document.createElement('article');
-  card.className = 'project-card reveal';
+  card.className = 'project-card project-card-featured reveal';
   card.dataset.project = 'nh-chevy-kiosk';
   card.innerHTML = `
     <div class="project-topline">
-      <span class="project-index">07</span>
+      <span class="project-index">04</span>
       <span class="project-status">Automotive AI</span>
     </div>
 
     <p class="project-domain">Automotive AI + Showroom Systems</p>
     <h3>NH Chevy Showroom Kiosk</h3>
     <p>
-      An in-store touchscreen platform for dealership customers to browse inventory, compare vehicles,
-      work with a tool-using AI sales assistant, estimate trades and payments, and hand off directly to
-      dealership staff through operational notification workflows.
+      An in-store touchscreen platform where a tool-using AI assistant works against structured dealership
+      inventory, calculations, customer workflows, and staff handoffs rather than treating the showroom like
+      another website chat surface.
     </p>
 
     <div class="tag-list" aria-label="NH Chevy Showroom Kiosk technologies">
       <span>React</span>
       <span>FastAPI</span>
       <span>Tool-Using AI</span>
+      <span>Redis</span>
       <span>PostgreSQL</span>
-      <span>CI/CD</span>
     </div>
 
     <div class="project-actions">
@@ -242,20 +251,153 @@ const addNhChevyKioskCard = () => {
   projectGrid.appendChild(card);
 };
 
-const enhanceProjectPortfolio = () => {
-  const projectCards = Array.from(document.querySelectorAll('#projects .project-card'));
+const projectArchive = [
+  {
+    name: 'Project Boundary',
+    domain: 'Autonomy Safety + Verification',
+    description: 'Deterministic rover safety orchestration with separated motion authority, replayable evidence, scenario verification, traceability, and a ROS 2 / Gazebo maturity path.',
+    links: [
+      ['Live', 'https://projectboundary.vercel.app/'],
+      ['Source', 'https://github.com/mpalmer79/rover-safety-platform']
+    ]
+  },
+  {
+    name: 'DriftGuard',
+    domain: 'Fault-Tolerant Control Systems',
+    description: 'Triple-redundant controller simulation with majority voting, fault detection, deterministic replay, safe-mode escalation, formal invariants, and observability.',
+    links: [['Source', 'https://github.com/mpalmer79/DriftGuard']]
+  },
+  {
+    name: 'AgentForge',
+    domain: 'AI Agent Infrastructure',
+    description: 'TypeScript framework for provider-agnostic agents with typed tools, middleware, streaming, circuit breakers, failover, token controls, and observability.',
+    links: [
+      ['Docs', 'https://mpalmer79.github.io/agentforge/'],
+      ['Source', 'https://github.com/mpalmer79/agentforge']
+    ]
+  },
+  {
+    name: 'VeriFlow',
+    domain: 'Compliance Workflow + Evidence',
+    description: 'Controlled workflow platform with rule-driven risk, stage gates, real evidence hashing, short-lived signed access, and a tamper-evident audit chain.',
+    links: [
+      ['Live', 'https://veriflow.up.railway.app/'],
+      ['Source', 'https://github.com/mpalmer79/VeriFlow']
+    ]
+  },
+  {
+    name: 'SignalFlow',
+    domain: 'Governed AI + Revenue Operations',
+    description: 'AI-native revenue operating system for signal capture, opportunity scoring, governed recommendations, human review, provider safety, and outcome attribution.',
+    links: [
+      ['Live', 'https://signalflow-revenue.vercel.app'],
+      ['Source', 'https://github.com/mpalmer79/SignalFlow']
+    ]
+  },
+  {
+    name: 'Civil Engineer AI',
+    domain: 'Engineering Workflow',
+    description: 'Applied engineering interface exploring structured analysis, technical decision support, and modern AI-assisted engineering workflows.',
+    links: [['Source', 'https://github.com/mpalmer79/civil-engineer']]
+  },
+  {
+    name: 'ShipDay',
+    domain: 'Full-Stack Software Engineering',
+    description: 'A larger full-stack application that broadens the portfolio beyond automotive and AI-specific systems and demonstrates end-to-end application delivery.',
+    links: [['Source', 'https://github.com/mpalmer79/shipday']]
+  },
+  {
+    name: 'PharmaRep Trainer',
+    domain: 'AI Training + Regulated Sales',
+    description: 'Explainable adaptive sales-training platform with real-time coaching, progression logic, manager oversight, compliance-oriented outputs, and audit-ready artifacts.',
+    links: [['Source', 'https://github.com/mpalmer79/pharma-rep-trainer']]
+  }
+];
 
-  prependProjectLink(projectCards, 'ARPI', 'engineering/arpi.html', 'Engineering brief');
-  prependProjectLink(
-    projectCards,
-    'Vehicle Thermal Management Simulation',
-    'engineering/vtms.html',
-    'Engineering brief'
-  );
-  addNhChevyKioskCard();
+const renderProjectArchive = (projectSection, projectGrid) => {
+  if (projectSection.querySelector('.project-archive')) return;
+
+  const archive = document.createElement('div');
+  archive.className = 'project-archive reveal';
+
+  const rows = projectArchive.map((project) => {
+    const links = project.links.map(([label, href]) => `
+      <a href="${href}" target="_blank" rel="noreferrer">${label} <span aria-hidden="true">↗</span></a>
+    `).join('');
+
+    return `
+      <article class="project-archive-row">
+        <div class="project-archive-name">${project.name}</div>
+        <div class="project-archive-domain">${project.domain}</div>
+        <p class="project-archive-description">${project.description}</p>
+        <div class="project-archive-links">${links}</div>
+      </article>
+    `;
+  }).join('');
+
+  archive.innerHTML = `
+    <div class="project-archive-heading">
+      <div>
+        <p class="eyebrow">Additional systems</p>
+        <h3>Selected project archive</h3>
+      </div>
+      <p>
+        Flagship projects get the deepest engineering treatment above. This archive shows additional
+        systems that demonstrate breadth across autonomy, AI infrastructure, compliance workflows,
+        engineering tools, and full-stack product development.
+      </p>
+    </div>
+
+    <div class="project-archive-list">${rows}</div>
+
+    <div class="project-archive-footer">
+      <a href="https://github.com/mpalmer79?tab=repositories" target="_blank" rel="noreferrer">
+        View all public repositories <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  `;
+
+  projectGrid.insertAdjacentElement('afterend', archive);
 };
 
-enhanceProjectPortfolio();
+const curateProjectPortfolio = () => {
+  const projectSection = document.getElementById('projects');
+  const projectGrid = projectSection?.querySelector('.project-grid');
+  if (!projectSection || !projectGrid) return;
+
+  ensurePortfolioProjectStyles();
+  addNhChevyKioskCard();
+
+  let projectCards = Array.from(projectGrid.querySelectorAll('.project-card'));
+
+  prependProjectLink(projectCards, 'ARPI', 'engineering/arpi.html', 'Engineering brief');
+  prependProjectLink(projectCards, 'Vehicle Thermal Management Simulation', 'engineering/vtms.html', 'Engineering brief');
+  prependProjectLink(projectCards, 'LedgerLens', 'engineering/ledgerlens.html', 'Engineering brief');
+  prependProjectLink(projectCards, 'NH Chevy Showroom Kiosk', 'engineering/nh-chevy-kiosk.html', 'Engineering brief');
+
+  const flagshipTitles = new Set([
+    'ARPI',
+    'Vehicle Thermal Management Simulation',
+    'LedgerLens',
+    'NH Chevy Showroom Kiosk'
+  ]);
+
+  projectCards.forEach((card) => {
+    const title = card.querySelector('h3')?.textContent.trim();
+    if (title && !flagshipTitles.has(title)) card.remove();
+  });
+
+  const heading = projectSection.querySelector('.split-heading');
+  const eyebrow = heading?.querySelector('.eyebrow');
+  const title = heading?.querySelector('h2');
+
+  if (eyebrow) eyebrow.textContent = 'Flagship engineering work';
+  if (title) title.textContent = 'Systems where the engineering is inspectable.';
+
+  renderProjectArchive(projectSection, projectGrid);
+};
+
+curateProjectPortfolio();
 
 const header = document.querySelector('.site-header');
 const navToggle = document.querySelector('.nav-toggle');
