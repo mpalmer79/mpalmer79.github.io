@@ -181,6 +181,29 @@ const renderEducationV2 = () => {
 
 renderEducationV2();
 
+const addEngineeringBriefLinks = () => {
+  const projectCards = Array.from(document.querySelectorAll('#projects .project-card'));
+  const arpiCard = projectCards.find((card) => card.querySelector('h3')?.textContent.trim() === 'ARPI');
+
+  if (!arpiCard) return;
+
+  const actions = arpiCard.querySelector('.project-actions');
+  if (!actions || actions.querySelector('a[href="engineering/arpi.html"]')) return;
+
+  const link = document.createElement('a');
+  link.href = 'engineering/arpi.html';
+  link.append('Engineering brief ');
+
+  const arrow = document.createElement('span');
+  arrow.setAttribute('aria-hidden', 'true');
+  arrow.textContent = '↗';
+  link.appendChild(arrow);
+
+  actions.prepend(link);
+};
+
+addEngineeringBriefLinks();
+
 const header = document.querySelector('.site-header');
 const navToggle = document.querySelector('.nav-toggle');
 const primaryNav = document.querySelector('.primary-nav');
