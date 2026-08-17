@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Engineering brief for the NH Chevy Showroom Kiosk, Michael Palmer's in-store automotive AI sales assistant.">
+  <meta name="author" content="Michael Palmer">
+  <meta name="theme-color" content="#08101f">
+  <meta property="og:title" content="NH Chevy Showroom Kiosk Engineering Brief | Michael Palmer">
+  <meta property="og:description" content="Showroom UX, tool-using AI, inventory architecture, state management, staff handoff, and engineering decisions behind the NH Chevy Showroom Kiosk.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mpalmer79.github.io/engineering/nh-chevy-kiosk.html">
+  <link rel="canonical" href="https://mpalmer79.github.io/engineering/nh-chevy-kiosk.html">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../case-study.css">
+  <title>NH Chevy Showroom Kiosk Engineering Brief | Michael Palmer</title>
+</head>
+<body class="case-study-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="nav-shell">
+      <a class="brand" href="../" aria-label="Michael Palmer portfolio home">
+        <span class="brand-mark">MP</span>
+        <span class="brand-name">Michael Palmer</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="NH Chevy Showroom Kiosk engineering brief navigation">
+        <a class="back-link" href="../#projects">Back to portfolio</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#operations">Operations</a>
+        <a class="nav-cta" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk" target="_blank" rel="noreferrer">Source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="case-hero section-shell">
+      <div class="case-hero-grid">
+        <div class="reveal">
+          <p class="case-kicker">Engineering brief · Automotive AI · In-store systems</p>
+          <h1>NH Chevy Showroom Kiosk</h1>
+          <p class="case-deck">
+            A touchscreen showroom assistant built around the fact that the customer is already physically
+            inside the dealership. Inventory discovery, AI conversation, payment and trade workflows, deal
+            worksheets, and staff escalation are designed as one in-store operating system rather than a web chatbot.
+          </p>
+          <div class="case-actions">
+            <a class="button button-primary" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk" target="_blank" rel="noreferrer">View source</a>
+            <a class="button button-secondary" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk/blob/main/ARCHITECTURE.md" target="_blank" rel="noreferrer">Architecture</a>
+            <a class="button button-secondary" href="../#projects">Portfolio</a>
+          </div>
+        </div>
+
+        <aside class="case-status-panel reveal" aria-label="NH Chevy Showroom Kiosk engineering status">
+          <h2>System posture</h2>
+          <div class="case-status-list">
+            <div class="case-status-row"><span class="case-status-label">Context</span><span class="case-status-value good">Showroom-first UX, not website chat</span></div>
+            <div class="case-status-row"><span class="case-status-label">Inventory</span><span class="case-status-value good">PBS nightly XLSX treated as read-only ground truth</span></div>
+            <div class="case-status-row"><span class="case-status-label">AI</span><span class="case-status-value good">Tool-using conversational workflow</span></div>
+            <div class="case-status-row"><span class="case-status-label">State</span><span class="case-status-value good">Hybrid live-session and durable-business storage</span></div>
+            <div class="case-status-row"><span class="case-status-label">Fallbacks</span><span class="case-status-value pending">Development fallbacks are explicit, not production posture</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <nav class="case-nav" aria-label="On this page">
+      <div class="case-nav-inner">
+        <a href="#problem">Problem</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#operations">Operations</a>
+        <a href="#boundaries">Boundaries</a>
+        <a href="#evidence">Evidence</a>
+      </div>
+    </nav>
+
+    <section class="case-section" id="problem">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Problem framing</p>
+          <h2>The customer is already standing in the showroom.</h2>
+          <p>
+            That single constraint changes the product. The system does not need to imitate a lead-generation
+            chatbot. It needs to help a physically present customer explore inventory, understand options,
+            prepare a deal, and reach a human employee at the right moment.
+          </p>
+        </div>
+
+        <div class="case-problem">
+          <article class="case-copy-card reveal">
+            <p>
+              The kiosk combines customer-facing discovery with dealership operations. A conversation may move
+              from a broad vehicle request into live inventory filtering, affordability checks, a trade workflow,
+              an itemized worksheet, and finally a staff notification.
+            </p>
+            <p>
+              The architecture therefore separates conversational reasoning from the dealership facts and actions
+              the assistant is allowed to use. Inventory remains read-only, tools define operational capabilities,
+              and durable business artifacts are stored separately from short-lived conversation state.
+            </p>
+          </article>
+          <aside class="case-callout reveal">
+            <strong>Design principle</strong>
+            <p>Use AI for conversation and orchestration. Keep inventory, calculations, state, and staff handoff behind explicit system boundaries.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="architecture">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">System architecture</p>
+          <h2>Conversation is only one layer of the system.</h2>
+          <p>The touchscreen talks to FastAPI. FastAPI owns tool execution, state, retrieval, calculations, integrations, and durable workflow boundaries.</p>
+        </div>
+
+        <div class="architecture-stack reveal" aria-label="NH Chevy Showroom Kiosk architecture">
+          <div class="architecture-row">
+            <div class="arch-node primary"><strong>React kiosk</strong><span>1920×1080 touchscreen experience</span></div>
+            <div class="arch-node primary"><strong>FastAPI boundary</strong><span>Versioned API routes and workflow orchestration</span></div>
+            <div class="arch-node primary"><strong>Tool executor</strong><span>Inventory, worksheet, affordability, notification and session actions</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node governance"><strong>PBS inventory export</strong><span>Nightly XLSX source, read-only from the kiosk</span></div>
+            <div class="arch-node governance"><strong>Redis session state</strong><span>Cross-process conversation continuity</span></div>
+            <div class="arch-node governance"><strong>PostgreSQL durables</strong><span>Worksheets, leads and outcomes</span></div>
+          </div>
+          <div class="arch-arrow" aria-hidden="true">↓</div>
+          <div class="architecture-row">
+            <div class="arch-node"><strong>Claude</strong><span>Conversation and multi-tool orchestration</span></div>
+            <div class="arch-node"><strong>NHTSA / TTS</strong><span>VIN decode and optional speech services</span></div>
+            <div class="arch-node"><strong>Staff channels</strong><span>Slack, SMS and email handoff</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="decisions">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering decisions</p>
+          <h2>Optimize for dealership scale and showroom reality.</h2>
+        </div>
+
+        <div class="case-decisions">
+          <article class="case-decision reveal"><span class="case-decision-index">01</span><h3>PBS XLSX as inventory source of truth</h3><p>The nightly export matches an existing dealership operating path, avoids requiring vendor API provisioning, and keeps the kiosk read-only against the inventory system of record.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">02</span><h3>Tool use over RAG</h3><p>Explicit tools let the model search, calculate, create worksheets and notify staff instead of stuffing a large inventory table into context and hoping the model reasons correctly.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">03</span><h3>TF-IDF over embedding infrastructure</h3><p>At roughly dealership-sized inventory counts, sparse cosine retrieval is fast, local and cheap. External embedding latency and cost do not buy enough signal to justify the dependency.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">04</span><h3>Split transient and durable state</h3><p>Live conversation state uses in-memory plus Redis. Worksheets, leads and outcomes go to Postgres because their retention and query patterns are fundamentally different.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">05</span><h3>Centralize model access</h3><p>Claude calls flow through a constrained module, keeping tool behavior, fallbacks and a future model-provider swap from leaking across the entire application.</p></article>
+          <article class="case-decision reveal"><span class="case-decision-index">06</span><h3>Human handoff is a product capability</h3><p>Slack, SMS and email escalation are not ancillary integrations. They are the bridge from the kiosk workflow back into the dealership's real human operating process.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="operations">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">End-to-end behavior</p>
+          <h2>A request becomes structured action.</h2>
+          <p>The architecture document traces a representative request from natural language to inventory retrieval, structured tool results, rendered vehicle cards and persisted session state.</p>
+        </div>
+
+        <div class="case-production-grid">
+          <article class="case-production-card reveal">
+            <h3>Example request</h3>
+            <ul>
+              <li>Customer asks for a blue Equinox under a budget.</li>
+              <li>FastAPI loads or creates the session state.</li>
+              <li>Claude receives explicit tool definitions.</li>
+              <li>The model requests inventory search with structured constraints.</li>
+              <li>TF-IDF retrieval ranks inventory and cheap filters apply color and price rules.</li>
+              <li>Structured results return to the model and frontend.</li>
+            </ul>
+          </article>
+          <article class="case-production-card reveal">
+            <h3>Operational continuation</h3>
+            <ul>
+              <li>Conversation state persists across turns.</li>
+              <li>Vehicle selections can become a worksheet.</li>
+              <li>Payment and affordability tools stay outside free-form model arithmetic.</li>
+              <li>Customer intent can generate a durable lead or outcome.</li>
+              <li>Staff can be paged through operational notification channels.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="boundaries">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Tradeoffs and limitations</p>
+          <h2>Production-shaped does not mean production-complete.</h2>
+        </div>
+
+        <div class="case-boundaries">
+          <article class="case-boundary-card reveal"><h3>Vendor-data dependency</h3><p>The kiosk depends on the freshness and shape of the PBS export. A spreadsheet path is practical, but it is still a batch integration with operational latency.</p></article>
+          <article class="case-boundary-card reveal"><h3>Single-model dependency</h3><p>Claude is the conversational provider. Centralization reduces swap cost, but upstream availability and behavior still remain dependencies.</p></article>
+          <article class="case-boundary-card reveal"><h3>Development fallback is not production storage</h3><p>The JSON fallback exists to make local demos easy. A production deployment is expected to configure its durable database explicitly.</p></article>
+          <article class="case-boundary-card reveal"><h3>AI does not own inventory truth</h3><p>The model can orchestrate tools and explain results, but inventory facts come from the structured dealership data path, not model memory.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section" id="evidence">
+      <div class="case-content">
+        <div class="case-section-heading reveal">
+          <p class="case-kicker">Engineering evidence</p>
+          <h2>Inspect the decisions behind the experience.</h2>
+        </div>
+
+        <div class="case-evidence-grid">
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk/blob/main/ARCHITECTURE.md" target="_blank" rel="noreferrer"><span>Architecture</span><strong>Architecture overview</strong><small>System diagram, request walkthrough and headline design choices.</small></a>
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noreferrer"><span>Deep dive</span><strong>Detailed architecture</strong><small>Service responsibilities, request flows and state-machine detail.</small></a>
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk/tree/main/docs/adr" target="_blank" rel="noreferrer"><span>Decisions</span><strong>Architecture Decision Records</strong><small>The why behind inventory, AI and integration choices.</small></a>
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk/blob/main/docs/INDUSTRY_CONTEXT.md" target="_blank" rel="noreferrer"><span>Domain</span><strong>Dealership industry context</strong><small>PBS, F&I, lead lifecycle and showroom workflow context.</small></a>
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk/actions" target="_blank" rel="noreferrer"><span>Delivery</span><strong>CI workflows</strong><small>Backend, frontend, AI-service and end-to-end automation.</small></a>
+          <a class="case-evidence-card reveal" href="https://github.com/mpalmer79/nh-chevy-showroom-kiosk" target="_blank" rel="noreferrer"><span>Source</span><strong>GitHub repository</strong><small>React, FastAPI, AI orchestration, persistence, tests and documentation.</small></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-footer-cta section-shell">
+      <div class="case-footer-panel reveal">
+        <div>
+          <p class="case-kicker">Portfolio</p>
+          <h2>Domain context should shape architecture.</h2>
+          <p>The kiosk is built around dealership workflow first, with AI added where it can orchestrate structured capabilities without owning the underlying facts.</p>
+        </div>
+        <div class="case-actions"><a class="button button-primary" href="../#projects">View more work</a></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../script.js"></script>
+</body>
+</html>
