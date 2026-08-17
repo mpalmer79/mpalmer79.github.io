@@ -37,4 +37,5 @@ Michael Palmer
 - GitHub: https://github.com/mpalmer79
 - LinkedIn: https://www.linkedin.com/in/mpalmer1234/
 
-<!-- Trigger GitHub Pages redeploy -->
+
+<!-- GitHub Pages clean redeploy -->
