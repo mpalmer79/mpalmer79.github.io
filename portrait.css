@@ -121,6 +121,7 @@
 body #projects .project-grid > .project-card.project-card-featured:nth-child(1),
 body #projects .project-grid > .project-card.project-card-featured:nth-child(2),
 body #projects .project-grid > .project-card.project-card-featured:nth-child(3),
+body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"],
 body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"] {
   --project-media-height: 238px;
   padding-top: calc(var(--project-media-height) + 30px);
@@ -130,6 +131,7 @@ body #projects .project-grid > .project-card.project-card-featured[data-project=
 body #projects .project-grid > .project-card.project-card-featured:nth-child(1)::before,
 body #projects .project-grid > .project-card.project-card-featured:nth-child(2)::before,
 body #projects .project-grid > .project-card.project-card-featured:nth-child(3)::before,
+body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"]::before,
 body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"]::before {
   inset: 0 0 auto;
   width: 100%;
@@ -143,6 +145,7 @@ body #projects .project-grid > .project-card.project-card-featured[data-project=
 body #projects .project-grid > .project-card.project-card-featured:nth-child(1)::after,
 body #projects .project-grid > .project-card.project-card-featured:nth-child(2)::after,
 body #projects .project-grid > .project-card.project-card-featured:nth-child(3)::after,
+body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"]::after,
 body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"]::after {
   inset: 0 0 auto;
   width: 100%;
@@ -160,6 +163,7 @@ body #projects .project-grid > .project-card.project-card-featured[data-project=
 body #projects .project-grid > .project-card.project-card-featured:nth-child(1) .project-topline,
 body #projects .project-grid > .project-card.project-card-featured:nth-child(2) .project-topline,
 body #projects .project-grid > .project-card.project-card-featured:nth-child(3) .project-topline,
+body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"] .project-topline,
 body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"] .project-topline {
   position: absolute;
   top: 22px;
@@ -180,6 +184,10 @@ body #projects .project-grid > .project-card.project-card-featured:nth-child(3):
   background-position: center 46%;
 }
 
+body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"]::before {
+  background-position: center 52%;
+}
+
 body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"]::before {
   background-position: center 55%;
 }
@@ -187,6 +195,7 @@ body #projects .project-grid > .project-card.project-card-featured[data-project=
 body #projects .project-grid > .project-card.project-card-featured:nth-child(1):hover::before,
 body #projects .project-grid > .project-card.project-card-featured:nth-child(2):hover::before,
 body #projects .project-grid > .project-card.project-card-featured:nth-child(3):hover::before,
+body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"]:hover::before,
 body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"]:hover::before {
   opacity: 1;
   filter: saturate(1.08) contrast(1.05);
@@ -213,6 +222,7 @@ body #projects .project-grid > .project-card.project-card-featured[data-project=
   body #projects .project-grid > .project-card.project-card-featured:nth-child(1),
   body #projects .project-grid > .project-card.project-card-featured:nth-child(2),
   body #projects .project-grid > .project-card.project-card-featured:nth-child(3),
+  body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"],
   body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"] {
     --project-media-height: 210px;
     padding-top: calc(var(--project-media-height) + 24px);
@@ -221,6 +231,7 @@ body #projects .project-grid > .project-card.project-card-featured[data-project=
   body #projects .project-grid > .project-card.project-card-featured:nth-child(1)::before,
   body #projects .project-grid > .project-card.project-card-featured:nth-child(2)::before,
   body #projects .project-grid > .project-card.project-card-featured:nth-child(3)::before,
+  body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"]::before,
   body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"]::before {
     height: var(--project-media-height);
     opacity: 1;
@@ -230,6 +241,7 @@ body #projects .project-grid > .project-card.project-card-featured[data-project=
   body #projects .project-grid > .project-card.project-card-featured:nth-child(1)::after,
   body #projects .project-grid > .project-card.project-card-featured:nth-child(2)::after,
   body #projects .project-grid > .project-card.project-card-featured:nth-child(3)::after,
+  body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"]::after,
   body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"]::after {
     height: var(--project-media-height);
   }
@@ -237,6 +249,7 @@ body #projects .project-grid > .project-card.project-card-featured[data-project=
   body #projects .project-grid > .project-card.project-card-featured:nth-child(1) .project-topline,
   body #projects .project-grid > .project-card.project-card-featured:nth-child(2) .project-topline,
   body #projects .project-grid > .project-card.project-card-featured:nth-child(3) .project-topline,
+  body #projects .project-grid > .project-card.project-card-featured[data-project="nh-chevy-kiosk"] .project-topline,
   body #projects .project-grid > .project-card.project-card-featured[data-project="project-boundary"] .project-topline {
     top: 18px;
     left: 22px;
