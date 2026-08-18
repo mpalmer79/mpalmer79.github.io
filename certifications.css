@@ -1,0 +1,321 @@
+.professional-learning-section {
+  display: grid;
+  gap: 20px;
+}
+
+.professional-learning-heading {
+  margin-bottom: 0;
+}
+
+.credential-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.credential-summary > div {
+  min-width: 0;
+  padding: 16px 17px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgba(99, 184, 255, 0.08), rgba(143, 224, 196, 0.025)),
+    rgba(255, 255, 255, 0.025);
+}
+
+.credential-summary strong,
+.credential-summary span {
+  display: block;
+}
+
+.credential-summary strong {
+  color: var(--text);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.credential-summary span {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.credential-feature-block {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(135deg, rgba(255, 211, 122, 0.045), transparent 35%),
+    linear-gradient(155deg, rgba(99, 184, 255, 0.07), rgba(143, 224, 196, 0.02)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.credential-block-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
+  gap: 26px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.credential-block-heading h4 {
+  margin: 4px 0 0;
+  color: var(--text);
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+.credential-block-heading > p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.credential-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.credential-feature-card {
+  display: flex;
+  min-height: 188px;
+  flex-direction: column;
+  padding: 17px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 14px;
+  background: rgba(8, 16, 31, 0.26);
+}
+
+.credential-feature-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.credential-type {
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 7px;
+  border: 1px solid rgba(143, 224, 196, 0.17);
+  border-radius: 999px;
+  color: var(--accent-soft);
+  background: rgba(143, 224, 196, 0.045);
+  font-size: 0.64rem;
+  font-weight: 760;
+  letter-spacing: 0.035em;
+  line-height: 1.25;
+}
+
+.credential-date {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.credential-feature-card h4 {
+  margin: 13px 0 7px;
+  color: var(--text);
+  font-size: 0.98rem;
+  line-height: 1.38;
+}
+
+.credential-feature-card p {
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.credential-link {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.credential-link:hover,
+.credential-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.credential-accordion {
+  display: grid;
+  gap: 9px;
+}
+
+.credential-category {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.credential-category[open] {
+  background:
+    linear-gradient(150deg, rgba(99, 184, 255, 0.045), rgba(143, 224, 196, 0.015)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.credential-category summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 18px;
+  color: var(--text);
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.91rem;
+  font-weight: 720;
+}
+
+.credential-category summary::-webkit-details-marker {
+  display: none;
+}
+
+.credential-category summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.credential-category-meta {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 560;
+  white-space: nowrap;
+}
+
+.credential-chevron {
+  color: var(--accent);
+  font-size: 1rem;
+  transition: transform 160ms ease;
+}
+
+.credential-category[open] .credential-chevron {
+  transform: rotate(180deg);
+}
+
+.credential-category-body {
+  border-top: 1px solid var(--line);
+}
+
+.credential-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.credential-row:last-child {
+  border-bottom: 0;
+}
+
+.credential-row-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.credential-row h5 {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.84rem;
+  font-weight: 670;
+  line-height: 1.4;
+}
+
+.credential-row p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+.credential-disclosure {
+  margin: -2px 0 0;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .credential-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .credential-block-heading {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 620px) {
+  .professional-learning-section {
+    gap: 16px;
+  }
+
+  .credential-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .credential-summary > div {
+    padding: 13px 14px;
+  }
+
+  .credential-summary strong {
+    font-size: 1.25rem;
+  }
+
+  .credential-feature-block {
+    padding: 16px;
+  }
+
+  .credential-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .credential-feature-card {
+    min-height: 0;
+    padding: 15px;
+  }
+
+  .credential-category summary {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 14px 15px;
+    font-size: 0.84rem;
+  }
+
+  .credential-category-meta {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .credential-chevron {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .credential-row {
+    grid-template-columns: 1fr;
+    gap: 9px;
+    padding: 13px 15px;
+  }
+
+  .credential-row .credential-link {
+    margin-top: 0;
+  }
+}
