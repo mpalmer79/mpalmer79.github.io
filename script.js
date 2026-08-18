@@ -8,6 +8,9 @@
   });
 
   loadScript('/script-core.js')
-    .then(() => loadScript('/certifications.js'))
+    .then(() => {
+      if (!document.getElementById('education')) return null;
+      return loadScript('/certifications.js');
+    })
     .catch((error) => console.error('Portfolio script loading failed:', error));
 })();
