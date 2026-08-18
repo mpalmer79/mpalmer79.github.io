@@ -241,31 +241,31 @@ body::before {
 
 #projects .project-grid > .project-card:nth-child(1) {
   --project-cover-image: url("https://arpi.up.railway.app/brand/social-preview.png");
-  --project-cover-opacity: 0.42;
+  --project-cover-opacity: 0.58;
   --project-cover-position: center top;
 }
 
 #projects .project-grid > .project-card:nth-child(2) {
   --project-cover-image: url("https://raw.githubusercontent.com/mpalmer79/vehicle-thermal-management-simulation/main/web/public/validation/measured-vs-predicted.svg");
-  --project-cover-opacity: 0.34;
-  --project-cover-position: center 8%;
+  --project-cover-opacity: 0.62;
+  --project-cover-position: center top;
 }
 
 #projects .project-grid > .project-card:nth-child(3) {
   --project-cover-image: url("https://ledgerlens.up.railway.app/og/ledgerlens-og.png");
-  --project-cover-opacity: 0.4;
+  --project-cover-opacity: 0.54;
   --project-cover-position: center top;
 }
 
 #projects .project-card[data-project="nh-chevy-kiosk"] {
   --project-cover-image: url("https://nhchevykiosk.up.railway.app/og-image.png");
-  --project-cover-opacity: 0.42;
+  --project-cover-opacity: 0.58;
   --project-cover-position: center top;
 }
 
 #projects .project-card[data-project="project-boundary"] {
   --project-cover-image: url("https://projectboundary.vercel.app/opengraph-image.png");
-  --project-cover-opacity: 0.4;
+  --project-cover-opacity: 0.56;
   --project-cover-position: center top;
 }
 
@@ -283,11 +283,11 @@ body::before {
   pointer-events: none;
   background-image: var(--project-cover-image);
   background-repeat: no-repeat;
-  background-size: 100% auto;
+  background-size: cover;
   background-position: var(--project-cover-position, center top);
-  opacity: var(--project-cover-opacity, 0.38);
-  filter: saturate(0.9) contrast(0.96);
-  transform: scale(1.012);
+  opacity: var(--project-cover-opacity, 0.56);
+  filter: saturate(1.08) contrast(1.04);
+  transform: scale(1.015);
   transform-origin: top center;
   transition: opacity 220ms ease, filter 220ms ease, transform 320ms ease;
 }
@@ -301,13 +301,15 @@ body::before {
   background:
     linear-gradient(
       180deg,
-      rgba(250, 252, 249, 0.48) 0%,
-      rgba(250, 252, 249, 0.62) 18%,
-      rgba(249, 251, 247, 0.82) 38%,
-      rgba(249, 250, 246, 0.95) 62%,
+      rgba(250, 252, 249, 0.16) 0%,
+      rgba(250, 252, 249, 0.22) 12%,
+      rgba(249, 251, 247, 0.36) 24%,
+      rgba(249, 251, 247, 0.58) 38%,
+      rgba(249, 250, 246, 0.82) 55%,
+      rgba(249, 250, 246, 0.94) 72%,
       rgba(248, 250, 246, 0.985) 100%
     ),
-    linear-gradient(90deg, rgba(226, 240, 239, 0.1), rgba(246, 237, 221, 0.08));
+    linear-gradient(90deg, rgba(226, 240, 239, 0.04), rgba(246, 237, 221, 0.04));
 }
 
 #projects .project-card-featured > * {
@@ -316,14 +318,16 @@ body::before {
 }
 
 #projects .project-card-featured:hover::before {
-  opacity: calc(var(--project-cover-opacity, 0.38) + 0.05);
-  filter: saturate(1) contrast(1);
-  transform: scale(1.025);
+  opacity: min(0.72, calc(var(--project-cover-opacity, 0.56) + 0.06));
+  filter: saturate(1.14) contrast(1.06);
+  transform: scale(1.03);
 }
 
 #projects .project-card-featured .project-status,
 #projects .project-card-featured .tag-list span {
-  backdrop-filter: blur(8px);
+  background: rgba(250, 252, 248, 0.72);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
 }
 
 .project-status,
@@ -528,20 +532,23 @@ body::before {
   }
 
   #projects .project-card-featured::before {
-    opacity: calc(var(--project-cover-opacity, 0.38) * 0.9);
-    background-size: auto 38%;
-    background-position: top center;
+    opacity: var(--project-cover-opacity, 0.56);
+    background-size: cover;
+    background-position: var(--project-cover-position, center top);
+    filter: saturate(1.1) contrast(1.05);
   }
 
   #projects .project-card-featured::after {
     background:
       linear-gradient(
         180deg,
-        rgba(250, 252, 249, 0.58) 0%,
-        rgba(250, 252, 249, 0.72) 18%,
-        rgba(249, 251, 247, 0.9) 37%,
-        rgba(249, 250, 246, 0.98) 58%,
-        rgba(248, 250, 246, 0.995) 100%
+        rgba(250, 252, 249, 0.12) 0%,
+        rgba(250, 252, 249, 0.18) 10%,
+        rgba(249, 251, 247, 0.3) 20%,
+        rgba(249, 251, 247, 0.5) 34%,
+        rgba(249, 250, 246, 0.76) 50%,
+        rgba(249, 250, 246, 0.91) 68%,
+        rgba(248, 250, 246, 0.985) 100%
       );
   }
 
