@@ -60,32 +60,22 @@
   };
 
   const configureHomeRefresh = () => {
-    const brandMark = document.querySelector('.brand-mark');
-    if (!brandMark) return;
+    const brand = document.querySelector('.brand');
+    if (!brand) return;
 
-    brandMark.setAttribute('role', 'button');
-    brandMark.setAttribute('tabindex', '0');
-    brandMark.setAttribute('aria-label', 'Refresh home page');
+    brand.setAttribute('href', '/');
+    brand.setAttribute('aria-label', 'Refresh home page');
 
     const refreshHome = (event) => {
       event.preventDefault();
-      event.stopPropagation();
+      event.stopImmediatePropagation();
 
       const homeUrl = `${window.location.origin}/`;
-      if (window.location.href === homeUrl) {
-        window.location.reload();
-        return;
-      }
-
-      window.location.assign(homeUrl);
+      window.history.replaceState(null, '', homeUrl);
+      window.location.reload();
     };
 
-    brandMark.addEventListener('click', refreshHome);
-    brandMark.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        refreshHome(event);
-      }
-    });
+    brand.addEventListener('click', refreshHome, true);
   };
 
   configureProjectCovers();
