@@ -23,6 +23,42 @@
     ledgerLensCard.style.setProperty('--project-cover-position', 'center top');
   };
 
+  const configureProjectTitleLinks = () => {
+    const featuredProjects = new Set([
+      'ARPI',
+      'Vehicle Thermal Management Simulation',
+      'LedgerLens',
+      'NH Chevy Showroom Kiosk'
+    ]);
+
+    document.querySelectorAll('#projects .project-card').forEach((card) => {
+      const title = card.querySelector('h3');
+      const projectName = title?.textContent.trim();
+
+      if (!title || !featuredProjects.has(projectName) || title.querySelector('a')) return;
+
+      const liveLink = Array.from(card.querySelectorAll('.project-actions a')).find((link) => {
+        const label = link.textContent.trim();
+        return /live application|guided demo/i.test(label);
+      });
+
+      if (!liveLink) return;
+
+      const titleLink = document.createElement('a');
+      titleLink.href = liveLink.href;
+      titleLink.target = '_blank';
+      titleLink.rel = 'noreferrer';
+      titleLink.textContent = projectName;
+      titleLink.setAttribute('aria-label', `Open ${projectName} live site in a new window`);
+      titleLink.setAttribute('title', `Open ${projectName} live site`);
+      titleLink.style.color = 'inherit';
+      titleLink.style.textDecoration = 'none';
+      titleLink.style.cursor = 'pointer';
+
+      title.replaceChildren(titleLink);
+    });
+  };
+
   const configureHomeRefresh = () => {
     const brandMark = document.querySelector('.brand-mark');
     if (!brandMark) return;
@@ -53,6 +89,7 @@
   };
 
   configureProjectCovers();
+  configureProjectTitleLinks();
   configureHomeRefresh();
 
   loadScript('/script-core.js')
