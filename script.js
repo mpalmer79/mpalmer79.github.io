@@ -23,7 +23,37 @@
     ledgerLensCard.style.setProperty('--project-cover-position', 'center top');
   };
 
+  const configureHomeRefresh = () => {
+    const brandMark = document.querySelector('.brand-mark');
+    if (!brandMark) return;
+
+    brandMark.setAttribute('role', 'button');
+    brandMark.setAttribute('tabindex', '0');
+    brandMark.setAttribute('aria-label', 'Refresh home page');
+
+    const refreshHome = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const homeUrl = `${window.location.origin}/`;
+      if (window.location.href === homeUrl) {
+        window.location.reload();
+        return;
+      }
+
+      window.location.assign(homeUrl);
+    };
+
+    brandMark.addEventListener('click', refreshHome);
+    brandMark.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        refreshHome(event);
+      }
+    });
+  };
+
   configureProjectCovers();
+  configureHomeRefresh();
 
   loadScript('/script-core.js')
     .then(() => {
